@@ -1,0 +1,120 @@
+{
+  "set": "generated",
+  "paths": [
+    "tests/generated"
+  ],
+  "started_at": "2026-11-13T17:44:01.386043+01:00",
+  "mutants_file": "mutants.toml",
+  "mutants_git": {
+    "committed_at": "2026-11-13T17:36:40+01:00",
+    "commit": "6c58594",
+    "uncommitted": false,
+    "head": "1616a96"
+  },
+  "killed": 3,
+  "total": 12,
+  "mutation_score": 0.25,
+  "by_class": {
+    "значення тіру": {
+      "total": 3,
+      "killed": 0
+    },
+    "межа EUR 1 000": {
+      "total": 3,
+      "killed": 1
+    },
+    "арифметика": {
+      "total": 3,
+      "killed": 2
+    },
+    "форма результату": {
+      "total": 3,
+      "killed": 0
+    }
+  },
+  "survived": [
+    "A-01",
+    "A-02",
+    "A-03",
+    "B-01",
+    "B-02",
+    "C-01",
+    "D-01",
+    "D-02",
+    "D-03"
+  ],
+  "rows": [
+    {
+      "id": "A-01",
+      "class": "значення тіру",
+      "description": "tier2: спред 1.5% замість 0.9%",
+      "killed": false
+    },
+    {
+      "id": "A-02",
+      "class": "значення тіру",
+      "description": "tier1: спред 0.9% замість 1.5%",
+      "killed": false
+    },
+    {
+      "id": "A-03",
+      "class": "значення тіру",
+      "description": "tier3: спред 0.9% замість 0.5%",
+      "killed": false
+    },
+    {
+      "id": "B-01",
+      "class": "межа EUR 1 000",
+      "description": "рівно EUR 1000 уже платні (також зачіпає інші тіри)",
+      "killed": false
+    },
+    {
+      "id": "B-02",
+      "class": "межа EUR 1 000",
+      "description": "ліміт tier2 зменшено з EUR 1000 до 999",
+      "killed": false
+    },
+    {
+      "id": "B-03",
+      "class": "межа EUR 1 000",
+      "description": "попереднє використання ліміту ігнорується",
+      "killed": true
+    },
+    {
+      "id": "C-01",
+      "class": "арифметика",
+      "description": "сума ділиться на курс замість множення",
+      "killed": false
+    },
+    {
+      "id": "C-02",
+      "class": "арифметика",
+      "description": "звичайний спред завищено вдесятеро",
+      "killed": true
+    },
+    {
+      "id": "C-03",
+      "class": "арифметика",
+      "description": "комісія додається до суми замість віднімання",
+      "killed": true
+    },
+    {
+      "id": "D-01",
+      "class": "форма результату",
+      "description": "серіалізація втрачає точність: 2 знаки замість 6",
+      "killed": false
+    },
+    {
+      "id": "D-02",
+      "class": "форма результату",
+      "description": "у словнику відсутній final_amount",
+      "killed": false
+    },
+    {
+      "id": "D-03",
+      "class": "форма результату",
+      "description": "поле історії використання ліміту завжди нульове",
+      "killed": false
+    }
+  ]
+}

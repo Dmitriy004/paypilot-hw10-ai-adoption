@@ -1,0 +1,225 @@
+{
+  "started_at": "2026-11-13T16:45:04.147845+00:00",
+  "paid_calls": 0,
+  "mutants_sha256": "04dc871bd9947a22a5dc252f0d97f070abcb960effa5f053f3a5b8a5f0a947e6",
+  "method": "same upstream run_pytest on fresh one-patch copies; full output retained; rewritten only as witness for union survivors",
+  "rows": [
+    {
+      "id": "A-01",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": ".F\n================================== FAILURES ===================================\n___________ test_tier_spread_above_allowance[tier2-1200-0.9-1189.2] ___________\n\ntier = 'tier2', amount = 1200, spread = 0.9, final = 1189.2\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n>       assert q.spread_pct == spread\nE       AssertionError: assert 1.5 == 0.9\nE        +  where 1.5 = FxQuote(from_currency='EUR', to_currency='EUR', amount=1200, mid_rate=1.0, tier='tier2', spread_pct=1.5, allowance_tot..., allowance_used_before_eur=0.0, allowance_applied=False, gross_amount=1200.0, spread_amount=18.0, final_amount=1182.0).spread_pct\n\ntests\\manual\\test_fx_manual.py:25: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier2-1200-0.9-1189.2]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 passed in 0.10s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.04s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": ".F\n================================== FAILURES ===================================\n___________ test_tier_spread_above_allowance[tier2-1200-0.9-1189.2] ___________\n\ntier = 'tier2', amount = 1200, spread = 0.9, final = 1189.2\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n>       assert q.spread_pct == spread\nE       AssertionError: assert 1.5 == 0.9\nE        +  where 1.5 = FxQuote(from_currency='EUR', to_currency='EUR', amount=1200, mid_rate=1.0, tier='tier2', spread_pct=1.5, allowance_tot..., allowance_used_before_eur=0.0, allowance_applied=False, gross_amount=1200.0, spread_amount=18.0, final_amount=1182.0).spread_pct\n\ntests\\manual\\test_fx_manual.py:25: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier2-1200-0.9-1189.2]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 passed in 0.11s\n"
+        }
+      }
+    },
+    {
+      "id": "A-02",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "F\n================================== FAILURES ===================================\n_____________ test_tier_spread_above_allowance[tier1-600-1.5-591] _____________\n\ntier = 'tier1', amount = 600, spread = 1.5, final = 591\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n>       assert q.spread_pct == spread\nE       AssertionError: assert 0.9 == 1.5\nE        +  where 0.9 = FxQuote(from_currency='EUR', to_currency='EUR', amount=600, mid_rate=1.0, tier='tier1', spread_pct=0.9, allowance_tota...500, allowance_used_before_eur=0.0, allowance_applied=False, gross_amount=600.0, spread_amount=5.4, final_amount=594.6).spread_pct\n\ntests\\manual\\test_fx_manual.py:25: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier1-600-1.5-591]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.10s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.04s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "F\n================================== FAILURES ===================================\n_____________ test_tier_spread_above_allowance[tier1-600-1.5-591] _____________\n\ntier = 'tier1', amount = 600, spread = 1.5, final = 591\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n>       assert q.spread_pct == spread\nE       AssertionError: assert 0.9 == 1.5\nE        +  where 0.9 = FxQuote(from_currency='EUR', to_currency='EUR', amount=600, mid_rate=1.0, tier='tier1', spread_pct=0.9, allowance_tota...500, allowance_used_before_eur=0.0, allowance_applied=False, gross_amount=600.0, spread_amount=5.4, final_amount=594.6).spread_pct\n\ntests\\manual\\test_fx_manual.py:25: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier1-600-1.5-591]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.12s\n"
+        }
+      }
+    },
+    {
+      "id": "A-03",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "..F\n================================== FAILURES ===================================\n____________ test_tier_spread_above_allowance[tier3-6000-0.5-5970] ____________\n\ntier = 'tier3', amount = 6000, spread = 0.5, final = 5970\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n>       assert q.spread_pct == spread\nE       AssertionError: assert 0.9 == 0.5\nE        +  where 0.9 = FxQuote(from_currency='EUR', to_currency='EUR', amount=6000, mid_rate=1.0, tier='tier3', spread_pct=0.9, allowance_tot..., allowance_used_before_eur=0.0, allowance_applied=False, gross_amount=6000.0, spread_amount=54.0, final_amount=5946.0).spread_pct\n\ntests\\manual\\test_fx_manual.py:25: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier3-6000-0.5-5970]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 2 passed in 0.10s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.04s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "..F\n================================== FAILURES ===================================\n____________ test_tier_spread_above_allowance[tier3-6000-0.5-5970] ____________\n\ntier = 'tier3', amount = 6000, spread = 0.5, final = 5970\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n>       assert q.spread_pct == spread\nE       AssertionError: assert 0.9 == 0.5\nE        +  where 0.9 = FxQuote(from_currency='EUR', to_currency='EUR', amount=6000, mid_rate=1.0, tier='tier3', spread_pct=0.9, allowance_tot..., allowance_used_before_eur=0.0, allowance_applied=False, gross_amount=6000.0, spread_amount=54.0, final_amount=5946.0).spread_pct\n\ntests\\manual\\test_fx_manual.py:25: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier3-6000-0.5-5970]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 2 passed in 0.11s\n"
+        }
+      }
+    },
+    {
+      "id": "B-01",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "...F\n================================== FAILURES ===================================\n______________________ test_tier2_exact_1000_eur_is_free ______________________\n\n    def test_tier2_exact_1000_eur_is_free():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\")\n>       assert q.allowance_applied is True\nE       AssertionError: assert False is True\nE        +  where False = FxQuote(from_currency='EUR', to_currency='USD', amount=1000, mid_rate=1.0869565217391304, tier='tier2', spread_pct=0.9...owance_applied=False, gross_amount=1086.9565217391303, spread_amount=9.782608695652172, final_amount=1077.173913043478).allowance_applied\n\ntests\\manual\\test_fx_manual.py:31: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_exact_1000_eur_is_free - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.11s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.05s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "...F\n================================== FAILURES ===================================\n______________________ test_tier2_exact_1000_eur_is_free ______________________\n\n    def test_tier2_exact_1000_eur_is_free():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\")\n>       assert q.allowance_applied is True\nE       AssertionError: assert False is True\nE        +  where False = FxQuote(from_currency='EUR', to_currency='USD', amount=1000, mid_rate=1.0869565217391304, tier='tier2', spread_pct=0.9...owance_applied=False, gross_amount=1086.9565217391303, spread_amount=9.782608695652172, final_amount=1077.173913043478).allowance_applied\n\ntests\\manual\\test_fx_manual.py:31: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_exact_1000_eur_is_free - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.12s\n"
+        }
+      }
+    },
+    {
+      "id": "B-02",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "...F\n================================== FAILURES ===================================\n______________________ test_tier2_exact_1000_eur_is_free ______________________\n\n    def test_tier2_exact_1000_eur_is_free():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\")\n>       assert q.allowance_applied is True\nE       AssertionError: assert False is True\nE        +  where False = FxQuote(from_currency='EUR', to_currency='USD', amount=1000, mid_rate=1.0869565217391304, tier='tier2', spread_pct=0.9...owance_applied=False, gross_amount=1086.9565217391303, spread_amount=9.782608695652172, final_amount=1077.173913043478).allowance_applied\n\ntests\\manual\\test_fx_manual.py:31: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_exact_1000_eur_is_free - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.10s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.05s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "...F\n================================== FAILURES ===================================\n______________________ test_tier2_exact_1000_eur_is_free ______________________\n\n    def test_tier2_exact_1000_eur_is_free():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\")\n>       assert q.allowance_applied is True\nE       AssertionError: assert False is True\nE        +  where False = FxQuote(from_currency='EUR', to_currency='USD', amount=1000, mid_rate=1.0869565217391304, tier='tier2', spread_pct=0.9...owance_applied=False, gross_amount=1086.9565217391303, spread_amount=9.782608695652172, final_amount=1077.173913043478).allowance_applied\n\ntests\\manual\\test_fx_manual.py:31: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_exact_1000_eur_is_free - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.11s\n"
+        }
+      }
+    },
+    {
+      "id": "B-03",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "....F\n================================== FAILURES ===================================\n_________ test_tier2_crossing_remaining_allowance_charges_whole_quote _________\n\n    def test_tier2_crossing_remaining_allowance_charges_whole_quote():\n        q = fx.quote(201, \"EUR\", \"USD\", \"tier2\", allowance_used_eur=800)\n>       assert q.allowance_applied is False\nE       AssertionError: assert True is False\nE        +  where True = FxQuote(from_currency='EUR', to_currency='USD', amount=201, mid_rate=1.0869565217391304, tier='tier2', spread_pct=0.0,...e_eur=800, allowance_applied=True, gross_amount=218.47826086956522, spread_amount=0.0, final_amount=218.47826086956522).allowance_applied\n\ntests\\manual\\test_fx_manual.py:38: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_crossing_remaining_allowance_charges_whole_quote\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 4 passed in 0.10s\n"
+        },
+        "generated": {
+          "killed": true,
+          "output": ".......F\n================================== FAILURES ===================================\n______________________ test_quote_partial_allowance_true ______________________\n\n    def test_quote_partial_allowance_true():\n        tier = list(policy.TIERS)[0]\n        from_currency = \"USD\"\n        to_currency = \"EUR\"\n        allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    \n        # Set allowance used so that partial allowance applies\n        allowance_used_eur = allowance_total / 2\n        amount_eur = allowance_total  # amount_eur > remaining allowance\n        amount = amount_eur * policy.RATES_TO_EUR[from_currency]\n    \n        q = fx.quote(amount, from_currency, to_currency, tier,\n                     allowance_used_eur=allowance_used_eur, partial_allowance=True)\n>       assert q.allowance_applied is False\nE       AssertionError: assert True is False\nE        +  where True = FxQuote(from_currency='USD', to_currency='EUR', amount=460.0, mid_rate=0.92, tier='tier1', spread_pct=0.0, allowance_t...eur=250.0, allowance_applied=True, gross_amount=423.20000000000005, spread_amount=0.0, final_amount=423.20000000000005).allowance_applied\n\ntests\\generated\\test_fx_generated.py:81: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/generated/test_fx_generated.py::test_quote_partial_allowance_true\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 7 passed in 0.12s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "....F\n================================== FAILURES ===================================\n_________ test_tier2_crossing_remaining_allowance_charges_whole_quote _________\n\n    def test_tier2_crossing_remaining_allowance_charges_whole_quote():\n        q = fx.quote(201, \"EUR\", \"USD\", \"tier2\", allowance_used_eur=800)\n>       assert q.allowance_applied is False\nE       AssertionError: assert True is False\nE        +  where True = FxQuote(from_currency='EUR', to_currency='USD', amount=201, mid_rate=1.0869565217391304, tier='tier2', spread_pct=0.0,...e_eur=800, allowance_applied=True, gross_amount=218.47826086956522, spread_amount=0.0, final_amount=218.47826086956522).allowance_applied\n\ntests\\manual\\test_fx_manual.py:38: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_crossing_remaining_allowance_charges_whole_quote\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 4 passed in 0.11s\n"
+        }
+      }
+    },
+    {
+      "id": "C-01",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "...F\n================================== FAILURES ===================================\n______________________ test_tier2_exact_1000_eur_is_free ______________________\n\n    def test_tier2_exact_1000_eur_is_free():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\")\n        assert q.allowance_applied is True\n        assert q.spread_pct == 0\n>       assert q.final_amount == pytest.approx(1086.9565217391305)\nE       assert 920.0 == 1086.95652173...5 � 0.00108696\nE         \nE         comparison failed\nE         Obtained: 920.0\nE         Expected: 1086.9565217391305 � 0.00108696\n\ntests\\manual\\test_fx_manual.py:33: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_exact_1000_eur_is_free - as...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.09s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.04s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "...F\n================================== FAILURES ===================================\n______________________ test_tier2_exact_1000_eur_is_free ______________________\n\n    def test_tier2_exact_1000_eur_is_free():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\")\n        assert q.allowance_applied is True\n        assert q.spread_pct == 0\n>       assert q.final_amount == pytest.approx(1086.9565217391305)\nE       assert 920.0 == 1086.95652173...5 � 0.00108696\nE         \nE         comparison failed\nE         Obtained: 920.0\nE         Expected: 1086.9565217391305 � 0.00108696\n\ntests\\manual\\test_fx_manual.py:33: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier2_exact_1000_eur_is_free - as...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.13s\n"
+        }
+      }
+    },
+    {
+      "id": "C-02",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "F\n================================== FAILURES ===================================\n_____________ test_tier_spread_above_allowance[tier1-600-1.5-591] _____________\n\ntier = 'tier1', amount = 600, spread = 1.5, final = 591\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n        assert q.spread_pct == spread\n>       assert q.final_amount == pytest.approx(final)\nE       assert 510.0 == 591 � 5.9e-04\nE         \nE         comparison failed\nE         Obtained: 510.0\nE         Expected: 591 � 5.9e-04\n\ntests\\manual\\test_fx_manual.py:26: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier1-600-1.5-591]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.10s\n"
+        },
+        "generated": {
+          "killed": true,
+          "output": "........F\n================================== FAILURES ===================================\n_____________________ test_quote_partial_allowance_false ______________________\n\n    def test_quote_partial_allowance_false():\n        tier = list(policy.TIERS)[0]\n        from_currency = \"USD\"\n        to_currency = \"EUR\"\n        allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    \n        allowance_used_eur = allowance_total + 1\n        amount = 1000.0\n    \n        q = fx.quote(amount, from_currency, to_currency, tier,\n                     allowance_used_eur=allowance_used_eur, partial_allowance=False)\n        assert q.allowance_applied is False\n        full_spread_amount = q.gross_amount * q.spread_pct / 100.0\n>       assert abs(q.spread_amount - full_spread_amount) < 1e-6\nE       AssertionError: assert 124.2 < 1e-06\nE        +  where 124.2 = abs((138.0 - 13.8))\nE        +    where 138.0 = FxQuote(from_currency='USD', to_currency='EUR', amount=1000.0, mid_rate=0.92, tier='tier1', spread_pct=1.5, allowance_...0, allowance_used_before_eur=501, allowance_applied=False, gross_amount=920.0, spread_amount=138.0, final_amount=782.0).spread_amount\n\ntests\\generated\\test_fx_generated.py:100: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/generated/test_fx_generated.py::test_quote_partial_allowance_false\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 8 passed in 0.10s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "F\n================================== FAILURES ===================================\n_____________ test_tier_spread_above_allowance[tier1-600-1.5-591] _____________\n\ntier = 'tier1', amount = 600, spread = 1.5, final = 591\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n        assert q.spread_pct == spread\n>       assert q.final_amount == pytest.approx(final)\nE       assert 510.0 == 591 � 5.9e-04\nE         \nE         comparison failed\nE         Obtained: 510.0\nE         Expected: 591 � 5.9e-04\n\ntests\\manual\\test_fx_manual.py:26: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier1-600-1.5-591]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.12s\n"
+        }
+      }
+    },
+    {
+      "id": "C-03",
+      "sets": {
+        "manual": {
+          "killed": true,
+          "output": "F\n================================== FAILURES ===================================\n_____________ test_tier_spread_above_allowance[tier1-600-1.5-591] _____________\n\ntier = 'tier1', amount = 600, spread = 1.5, final = 591\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n        assert q.spread_pct == spread\n>       assert q.final_amount == pytest.approx(final)\nE       assert 609.0 == 591 � 5.9e-04\nE         \nE         comparison failed\nE         Obtained: 609.0\nE         Expected: 591 � 5.9e-04\n\ntests\\manual\\test_fx_manual.py:26: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier1-600-1.5-591]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.10s\n"
+        },
+        "generated": {
+          "killed": true,
+          "output": "......F\n================================== FAILURES ===================================\n________________ test_quote_spread_applied_when_over_allowance ________________\n\n    def test_quote_spread_applied_when_over_allowance():\n        tier = list(policy.TIERS)[0]\n        from_currency = \"USD\"\n        to_currency = \"EUR\"\n        allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    \n        # Use amount large enough to exceed allowance\n        amount = (allowance_total + 10) * policy.RATES_TO_EUR[from_currency] * 2\n        allowance_used_eur = 0.0\n    \n        q = fx.quote(amount, from_currency, to_currency, tier, allowance_used_eur)\n        assert q.allowance_applied is False\n        assert q.spread_pct == policy.FX_SPREAD_PCT[tier]\n        assert q.spread_amount > 0\n>       assert q.final_amount < q.gross_amount\nE       AssertionError: assert 876.2779200000001 < 863.3280000000001\nE        +  where 876.2779200000001 = FxQuote(from_currency='USD', to_currency='EUR', amount=938.4000000000001, mid_rate=0.92, tier='tier1', spread_pct=1.5,...owance_applied=False, gross_amount=863.3280000000001, spread_amount=12.949920000000002, final_amount=876.2779200000001).final_amount\nE        +  and   863.3280000000001 = FxQuote(from_currency='USD', to_currency='EUR', amount=938.4000000000001, mid_rate=0.92, tier='tier1', spread_pct=1.5,...owance_applied=False, gross_amount=863.3280000000001, spread_amount=12.949920000000002, final_amount=876.2779200000001).gross_amount\n\ntests\\generated\\test_fx_generated.py:65: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/generated/test_fx_generated.py::test_quote_spread_applied_when_over_allowance\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 6 passed in 0.09s\n"
+        },
+        "all": {
+          "killed": true,
+          "output": "F\n================================== FAILURES ===================================\n_____________ test_tier_spread_above_allowance[tier1-600-1.5-591] _____________\n\ntier = 'tier1', amount = 600, spread = 1.5, final = 591\n\n    @pytest.mark.parametrize(\"tier,amount,spread,final\", [\n        (\"tier1\", 600, 1.5, 591),\n        (\"tier2\", 1200, 0.9, 1189.2),\n        (\"tier3\", 6000, 0.5, 5970),\n    ])\n    def test_tier_spread_above_allowance(tier, amount, spread, final):\n        \"\"\"Oracle: independent literal tariff values, not policy imports.\"\"\"\n        q = fx.quote(amount, \"EUR\", \"EUR\", tier)\n        assert q.spread_pct == spread\n>       assert q.final_amount == pytest.approx(final)\nE       assert 609.0 == 591 � 5.9e-04\nE         \nE         comparison failed\nE         Obtained: 609.0\nE         Expected: 591 � 5.9e-04\n\ntests\\manual\\test_fx_manual.py:26: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/manual/test_fx_manual.py::test_tier_spread_above_allowance[tier1-600-1.5-591]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.11s\n"
+        }
+      }
+    },
+    {
+      "id": "D-01",
+      "sets": {
+        "manual": {
+          "killed": false,
+          "output": ".........                                                                [100%]\n9 passed in 0.04s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.05s\n"
+        },
+        "all": {
+          "killed": false,
+          "output": ".....................                                                    [100%]\n21 passed in 0.06s\n"
+        }
+      },
+      "rewritten_witness_only": {
+        "killed": true,
+        "output": "...F\n================================== FAILURES ===================================\n_____ test_r03_serialized_quote_has_all_fields_and_six_decimal_precision ______\n\n    def test_r03_serialized_quote_has_all_fields_and_six_decimal_precision():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\", allowance_used_eur=1.123456789)\n>       assert q.as_dict() == {\n            \"from_currency\": \"EUR\", \"to_currency\": \"USD\", \"amount\": 1000,\n            \"mid_rate\": 1.086957, \"tier\": \"tier2\", \"spread_pct\": 0.9,\n            \"allowance_total_eur\": 1000, \"allowance_used_before_eur\": 1.123457,\n            \"allowance_applied\": False, \"gross_amount\": 1086.956522,\n            \"spread_amount\": 9.782609, \"final_amount\": 1077.173913,\n        }\nE       AssertionError: assert {'from_curren...e': 1.09, ...} == {'from_curren...1.086957, ...}\nE         \nE         Omitting 7 identical items, use -vv to show\nE         Differing items:\nE         {'spread_amount': 9.78} != {'spread_amount': 9.782609}\nE         {'allowance_used_before_eur': 1.12} != {'allowance_used_before_eur': 1.123457}\nE         {'gross_amount': 1086.96} != {'gross_amount': 1086.956522}\nE         {'mid_rate': 1.09} != {'mid_rate': 1.086957}\nE         {'final_amount': 1077.17} != {'final_amount': 1077.173913}\nE         Use -v to get more diff\n\ntests\\rewritten\\test_fx_rewritten.py:27: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rewritten/test_fx_rewritten.py::test_r03_serialized_quote_has_all_fields_and_six_decimal_precision\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.11s\n"
+      }
+    },
+    {
+      "id": "D-02",
+      "sets": {
+        "manual": {
+          "killed": false,
+          "output": ".........                                                                [100%]\n9 passed in 0.04s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.05s\n"
+        },
+        "all": {
+          "killed": false,
+          "output": ".....................                                                    [100%]\n21 passed in 0.06s\n"
+        }
+      },
+      "rewritten_witness_only": {
+        "killed": true,
+        "output": "...F\n================================== FAILURES ===================================\n_____ test_r03_serialized_quote_has_all_fields_and_six_decimal_precision ______\n\n    def test_r03_serialized_quote_has_all_fields_and_six_decimal_precision():\n        q = fx.quote(1000, \"EUR\", \"USD\", \"tier2\", allowance_used_eur=1.123456789)\n>       assert q.as_dict() == {\n            \"from_currency\": \"EUR\", \"to_currency\": \"USD\", \"amount\": 1000,\n            \"mid_rate\": 1.086957, \"tier\": \"tier2\", \"spread_pct\": 0.9,\n            \"allowance_total_eur\": 1000, \"allowance_used_before_eur\": 1.123457,\n            \"allowance_applied\": False, \"gross_amount\": 1086.956522,\n            \"spread_amount\": 9.782609, \"final_amount\": 1077.173913,\n        }\nE       AssertionError: assert {'from_curren...1.086957, ...} == {'from_curren...1.086957, ...}\nE         \nE         Omitting 11 identical items, use -vv to show\nE         Right contains 1 more item:\nE         {'final_amount': 1077.173913}\nE         Use -v to get more diff\n\ntests\\rewritten\\test_fx_rewritten.py:27: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rewritten/test_fx_rewritten.py::test_r03_serialized_quote_has_all_fields_and_six_decimal_precision\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 3 passed in 0.09s\n"
+      }
+    },
+    {
+      "id": "D-03",
+      "sets": {
+        "manual": {
+          "killed": false,
+          "output": ".........                                                                [100%]\n9 passed in 0.04s\n"
+        },
+        "generated": {
+          "killed": false,
+          "output": "............                                                             [100%]\n12 passed in 0.04s\n"
+        },
+        "all": {
+          "killed": false,
+          "output": ".....................                                                    [100%]\n21 passed in 0.06s\n"
+        }
+      },
+      "rewritten_witness_only": {
+        "killed": true,
+        "output": "..F\n================================== FAILURES ===================================\n___________ test_r02_partial_allowance_charges_only_100_of_300_eur ____________\n\n    def test_r02_partial_allowance_charges_only_100_of_300_eur():\n        q = fx.quote(300, \"EUR\", \"EUR\", \"tier2\", allowance_used_eur=800, partial_allowance=True)\n        assert q.allowance_applied is False\n        assert q.spread_amount == pytest.approx(0.9)\n        assert q.final_amount == pytest.approx(299.1)\n>       assert q.allowance_used_before_eur == 800\nE       AssertionError: assert 0.0 == 800\nE        +  where 0.0 = FxQuote(from_currency='EUR', to_currency='EUR', amount=300, mid_rate=1.0, tier='tier2', spread_pct=0.9, allowance_tota...000, allowance_used_before_eur=0.0, allowance_applied=False, gross_amount=300.0, spread_amount=0.9, final_amount=299.1).allowance_used_before_eur\n\ntests\\rewritten\\test_fx_rewritten.py:22: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/rewritten/test_fx_rewritten.py::test_r02_partial_allowance_charges_only_100_of_300_eur\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 2 passed in 0.10s\n"
+      }
+    }
+  ],
+  "finished_at": "2026-11-13T16:45:29.916422+00:00"
+}
