@@ -1,0 +1,140 @@
+{
+  "verified_at": "2026-11-13T16:49:47.9148749Z",
+  "source_commit": "be298e3b5593f2f6e9d716514c475d21cf2f861a",
+  "cloned_commit": "be298e3b5593f2f6e9d716514c475d21cf2f861a",
+  "initial_git_status": "",
+  "clone_directory": "C:\\Users\\Admin\\AppData\\Local\\Temp\\paypilot-l11-clean-28be03026db44ddeb60718ef20a84271",
+  "clone_command": "git clone --no-hardlinks --single-branch --branch codex/l11-openai-demo <local source> <fresh temp directory>",
+  "fresh_venv": true,
+  "dependency_command": "python -m pip install -r requirements.txt",
+  "install_output": "Collecting pytest==9.2.0 (from -r requirements.txt (line 1))\r\n  Using cached pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)\r\nCollecting pytest-cov==7.1.0 (from -r requirements.txt (line 2))\r\n  Using cached pytest_cov-7.1.0-py3-none-any.whl.metadata (32 kB)\r\nCollecting colorama>=0.4 (from pytest==9.2.0->-r requirements.txt (line 1))\r\n  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)\r\nCollecting iniconfig>=2 (from pytest==9.2.0->-r requirements.txt (line 1))\r\n  Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)\r\nCollecting packaging>=24 (from pytest==9.2.0->-r requirements.txt (line 1))\r\n  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)\r\nCollecting pluggy<2,>=1.6 (from pytest==9.2.0->-r requirements.txt (line 1))\r\n  Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)\r\nCollecting pygments>=2.15 (from pytest==9.2.0->-r requirements.txt (line 1))\r\n  Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)\r\nCollecting coverage>=7.10.6 (from coverage[toml]>=7.10.6->pytest-cov==7.1.0->-r requirements.txt (line 2))\r\n  Using cached coverage-7.17.3-cp312-cp312-win_amd64.whl.metadata (8.5 kB)\r\nUsing cached pytest-9.2.0-py3-none-any.whl (411 kB)\r\nUsing cached pytest_cov-7.1.0-py3-none-any.whl (22 kB)\r\nUsing cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)\r\nUsing cached coverage-7.17.3-cp312-cp312-win_amd64.whl (230 kB)\r\nUsing cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)\r\nUsing cached packaging-26.3-py3-none-any.whl (129 kB)\r\nUsing cached pluggy-1.7.0-py3-none-any.whl (27 kB)\r\nUsing cached pygments-2.21.0-py3-none-any.whl (1.3 MB)\r\nInstalling collected packages: pygments, pluggy, packaging, iniconfig, coverage, colorama, pytest, pytest-cov\r\nSuccessfully installed colorama-0.4.6 coverage-7.17.3 iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.2.0 pytest-cov-7.1.0\r\n\r\n[notice] A new release of pip is available: 25.0.1 -> 26.3\r\n[notice] To update, run: C:\\Users\\Admin\\AppData\\Local\\Temp\\paypilot-l11-clean-28be03026db44ddeb60718ef20a84271\\.venv\\Scripts\\python.exe -m pip install --upgrade pip\r\n",
+  "versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "pytest": "9.2.0",
+    "pytest_cov": "7.1.0",
+    "coverage": "7.17.3"
+  },
+  "tests_command": "python -m pytest -q",
+  "tests_exit": 0,
+  "tests_output": "..................................                                       [100%]\r\n34 passed in 0.20s\r\n",
+  "mutation_command": "python tools/run_mutants.py --set all",
+  "mutation_exit": 0,
+  "mutation_output": "Набір: all (tests/manual, tests/generated)\r\nСписок: mutants.toml, мутантів: 12\r\nСписок закомічено: 2026-11-13T17:36:40+01:00 (6c58594)\r\nОригінальний модуль: набір зелений.\r\n\r\n  A-01   вбито  [значення тіру] tier2: спред 1.5% замість 0.9%\r\n  A-02   вбито  [значення тіру] tier1: спред 0.9% замість 1.5%\r\n  A-03   вбито  [значення тіру] tier3: спред 0.9% замість 0.5%\r\n  B-01   вбито  [межа EUR 1 000] рівно EUR 1000 уже платні (також зачіпає інші тіри)\r\n  B-02   вбито  [межа EUR 1 000] ліміт tier2 зменшено з EUR 1000 до 999\r\n  B-03   вбито  [межа EUR 1 000] попереднє використання ліміту ігнорується\r\n  C-01   вбито  [арифметика] сума ділиться на курс замість множення\r\n  C-02   вбито  [арифметика] звичайний спред завищено вдесятеро\r\n  C-03   вбито  [арифметика] комісія додається до суми замість віднімання\r\n  D-01   ВИЖИВ  [форма результату] серіалізація втрачає точність: 2 знаки замість 6\r\n  D-02   ВИЖИВ  [форма результату] у словнику відсутній final_amount\r\n  D-03   ВИЖИВ  [форма результату] поле історії використання ліміту завжди нульове\r\n\r\nклас мутанта             | вбито\r\n-------------------------+-------\r\nзначення тіру            | 3/3\r\nмежа EUR 1 000           | 3/3\r\nарифметика               | 3/3\r\nформа результату         | 0/3\r\n-------------------------+-------\r\nразом                    | 9/12\r\nmutation score           | 75%\r\n\r\nВцілілі: D-01, D-02, D-03\r\nЗвіт: reports\\mutants-all-20261113-164937Z.json\r\n",
+  "mutation_report": {
+    "set": "all",
+    "paths": [
+      "tests/manual",
+      "tests/generated"
+    ],
+    "started_at": "2026-11-13T17:49:37.244931+01:00",
+    "mutants_file": "mutants.toml",
+    "mutants_git": {
+      "committed_at": "2026-11-13T17:36:40+01:00",
+      "commit": "6c58594",
+      "uncommitted": false,
+      "head": "be298e3"
+    },
+    "killed": 9,
+    "total": 12,
+    "mutation_score": 0.75,
+    "by_class": {
+      "значення тіру": {
+        "total": 3,
+        "killed": 3
+      },
+      "межа EUR 1 000": {
+        "total": 3,
+        "killed": 3
+      },
+      "арифметика": {
+        "total": 3,
+        "killed": 3
+      },
+      "форма результату": {
+        "total": 3,
+        "killed": 0
+      }
+    },
+    "survived": [
+      "D-01",
+      "D-02",
+      "D-03"
+    ],
+    "rows": [
+      {
+        "id": "A-01",
+        "class": "значення тіру",
+        "description": "tier2: спред 1.5% замість 0.9%",
+        "killed": true
+      },
+      {
+        "id": "A-02",
+        "class": "значення тіру",
+        "description": "tier1: спред 0.9% замість 1.5%",
+        "killed": true
+      },
+      {
+        "id": "A-03",
+        "class": "значення тіру",
+        "description": "tier3: спред 0.9% замість 0.5%",
+        "killed": true
+      },
+      {
+        "id": "B-01",
+        "class": "межа EUR 1 000",
+        "description": "рівно EUR 1000 уже платні (також зачіпає інші тіри)",
+        "killed": true
+      },
+      {
+        "id": "B-02",
+        "class": "межа EUR 1 000",
+        "description": "ліміт tier2 зменшено з EUR 1000 до 999",
+        "killed": true
+      },
+      {
+        "id": "B-03",
+        "class": "межа EUR 1 000",
+        "description": "попереднє використання ліміту ігнорується",
+        "killed": true
+      },
+      {
+        "id": "C-01",
+        "class": "арифметика",
+        "description": "сума ділиться на курс замість множення",
+        "killed": true
+      },
+      {
+        "id": "C-02",
+        "class": "арифметика",
+        "description": "звичайний спред завищено вдесятеро",
+        "killed": true
+      },
+      {
+        "id": "C-03",
+        "class": "арифметика",
+        "description": "комісія додається до суми замість віднімання",
+        "killed": true
+      },
+      {
+        "id": "D-01",
+        "class": "форма результату",
+        "description": "серіалізація втрачає точність: 2 знаки замість 6",
+        "killed": false
+      },
+      {
+        "id": "D-02",
+        "class": "форма результату",
+        "description": "у словнику відсутній final_amount",
+        "killed": false
+      },
+      {
+        "id": "D-03",
+        "class": "форма результату",
+        "description": "поле історії використання ліміту завжди нульове",
+        "killed": false
+      }
+    ]
+  },
+  "paid_calls": 0,
+  "provider_key_not_required": true
+}

@@ -154,4 +154,6 @@ python tools/run_mutants.py --set generated
 python tools/run_mutants.py --set all
 ```
 
-Перевірка на чистому локальному clone та незалежне final review ще виконуються; їхній фактичний proof буде додано окремо. Це лабораторна демонстрація, не підготовлене/відправлене ДЗ; homework-only generic template і формальний Impact Report зараз не заявляються готовими.
+Перевірено новий чистий локальний clone `be298e3b5593f2f6e9d716514c475d21cf2f861a`, початковий git status порожній, окремий свіжий venv і `pip install -r requirements.txt`: **34/34 PASS**, union **9/12**, ті самі D-01..03 вижили. Повний proof — `reports/clean-clone.json`, без ключів або нових API-викликів. Пізніші зміни — лише підсумкова документація й доказ цього clone, не comparator-код.
+
+Незалежне read-only рев'ю всього діапазону upstream..`be298e3`: Critical 0 / Important 0; зауваження про застарілий LAB-STATUS виправлено в запланованому оновленні статусу. [Звірка інваріантів і меж рев'ю](verification.md). Це лабораторна демонстрація, не підготовлене/відправлене ДЗ; homework-only generic template і формальний Impact Report зараз не заявляються готовими.

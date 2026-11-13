@@ -8,4 +8,6 @@
 
 Локальні технічні коміти дозволені; push і здача не запитувались. `app/`, `.claude/settings.json` та стенд не змінюємо. OpenAI отримує лише дослівний weak prompt і `fx.py`. Налаштування Claude не обмежують OpenAI: обмеження тут — явний payload без tools.
 
-Результати — `ai-adoption-impact-report.md`; шаблон збережено окремо. План — `docs/superpowers/plans/2026-11-13-l11-openai.md`. Стан: у роботі, генерації та mutation-прогонів ще немає.
+Результати — `ai-adoption-impact-report.md`; шаблон збережено окремо. План — `docs/superpowers/plans/2026-11-13-l11-openai.md`. Технічну демонстрацію виконано: baseline 9/12, OpenAI 3/12, union 9/12. У чистому локальному clone `be298e3` повний suite 34/34 PASS і union 9/12; доказ `reports/clean-clone.json`. Незалежне read-only рев'ю не знайшло Critical/Important; докладніше `verification.md`.
+
+Це не скасовує відхилень від курсу: людського baseline/таймера немає, а кінець сторінки через `timeoutMs` повторно не перевірено. Нічого не відправлено в LMS і не опубліковано в GitHub. Окремий aiq-final має отримати посилання на локальний commit з цими обмеженнями; LRA7 не завершувати без L14.
