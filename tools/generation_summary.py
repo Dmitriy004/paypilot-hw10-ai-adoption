@@ -4,6 +4,7 @@
 
 reports/generation.json — вивід Claude Code з прапорцем --output-format json.
 """
+import ast
 import json
 import re
 import sys
@@ -27,6 +28,29 @@ def main() -> int:
     else:
         text = raw.decode("utf-8-sig")
     data = json.loads(text)
+    if data.get("format") == "openai-responses-artifact-v1":
+        metadata = data["metadata"]
+        response = data["raw_response"]
+        if response.get("status") != "completed" or metadata.get("outcome") != "completed":
+            print("OpenAI generation is not completed", file=sys.stderr)
+            return 2
+        content = "\n".join(c["text"] for item in response.get("output", [])
+                            if item.get("type") == "message"
+                            for c in item.get("content", []) if c.get("type") == "output_text")
+        blocks = re.findall(r"```(?:python|py)?\s*\n(.*?)```", content, re.S)
+        code = blocks[0] if len(blocks) == 1 else content
+        raw_tests = sum(isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name.startswith("test_")
+                        for n in ast.walk(ast.parse(code)))
+        retained = sum(len(re.findall(r"^\s*def test_", f.read_text(encoding="utf-8"), re.M))
+                       for f in (ROOT / "tests/generated").glob("test_*.py"))
+        seconds = metadata["elapsed_seconds"]
+        print(f"Provider: OpenAI; model: {response['model']}")
+        print(f"Machine seconds: {seconds:.6f}; minutes: {seconds / 60:.9f}")
+        print(f"USD usage estimate: {metadata['usage_cost_estimate_usd']:.8f}; billing reconciled: {metadata['billing_reconciled']}")
+        print(f"Raw test functions: {raw_tests}")
+        print(f"Retained test functions: {retained}")
+        print("Historical generation artifact; no API call performed")
+        return 0
     if data.get("is_error"):
         print(f"УВАГА: генерація завершилась помилкою: {data.get('result')}")
         print("Якщо файл тестів повний і pytest tests/generated зелений, набір можна брати; числа нижче — до моменту помилки.\n")
