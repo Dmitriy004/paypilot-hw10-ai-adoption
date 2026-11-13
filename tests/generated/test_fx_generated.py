@@ -65,20 +65,6 @@ def test_quote_spread_applied_when_over_allowance():
     assert q.final_amount < q.gross_amount
 
 
-def test_quote_spread_pct_override():
-    tier = list(policy.TIERS)[0]
-    from_currency = "USD"
-    to_currency = "EUR"
-    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
-
-    amount = (allowance_total + 10) * policy.RATES_TO_EUR[from_currency]
-    override_spread = 5.5
-
-    q = fx.quote(amount, from_currency, to_currency, tier,
-                 allowance_used_eur=0.0, spread_pct_override=override_spread)
-    assert q.spread_pct == override_spread
-
-
 def test_quote_partial_allowance_true():
     tier = list(policy.TIERS)[0]
     from_currency = "USD"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="0.124" timestamp="2026-11-13T17:41:44.755673+01:00" hostname="DMYTRO-SUGAK"><testcase classname="tests.generated.test_fx_generated" name="test_mid_rate_known_currencies" time="0.001" /><testcase classname="tests.generated.test_fx_generated" name="test_mid_rate_unknown_currency" time="0.001" /><testcase classname="tests.generated.test_fx_generated" name="test_quote_valid_tiers_no_spread[tier1]" time="0.001" /><testcase classname="tests.generated.test_fx_generated" name="test_quote_valid_tiers_no_spread[tier2]" time="0.001" /><testcase classname="tests.generated.test_fx_generated" name="test_quote_valid_tiers_no_spread[tier3]" time="0.001" /><testcase classname="tests.generated.test_fx_generated" name="test_quote_invalid_tier" time="0.001" /><testcase classname="tests.generated.test_fx_generated" name="test_quote_spread_applied_when_over_allowance" time="0.000" /><testcase classname="tests.generated.test_fx_generated" name="test_quote_spread_pct_override" time="0.001"><failure message="AssertionError: assert 0.0 == 5.5&#10; +  where 0.0 = FxQuote(from_currency='USD', to_currency='EUR', amount=469.20000000000005, mid_rate=0.92, tier='tier1', spread_pct=0.0...e_eur=0.0, allowance_applied=True, gross_amount=431.66400000000004, spread_amount=0.0, final_amount=431.66400000000004).spread_pct">def test_quote_spread_pct_override():
+        tier = list(policy.TIERS)[0]
+        from_currency = "USD"
+        to_currency = "EUR"
+        allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
+    
+        amount = (allowance_total + 10) * policy.RATES_TO_EUR[from_currency]
+        override_spread = 5.5
+    
+        q = fx.quote(amount, from_currency, to_currency, tier,
+                     allowance_used_eur=0.0, spread_pct_override=override_spread)
+&gt;       assert q.spread_pct == override_spread
+E       AssertionError: assert 0.0 == 5.5
+E        +  where 0.0 = FxQuote(from_currency='USD', to_currency='EUR', amount=469.20000000000005, mid_rate=0.92, tier='tier1', spread_pct=0.0...e_eur=0.0, allowance_applied=True, gross_amount=431.66400000000004, spread_amount=0.0, final_amount=431.66400000000004).spread_pct
+
+tests\generated\test_fx_generated.py:79: AssertionError</failure></testcase><testcase classname="tests.generated.test_fx_generated" name="test_quote_partial_allowance_true" time="0.000" /><testcase classname="tests.generated.test_fx_generated" name="test_quote_partial_allowance_false" time="0.000" /><testcase classname="tests.generated.test_fx_generated" name="test_fxquote_as_dict_rounds_floats" time="0.000" /><testcase classname="tests.generated.test_fx_generated" name="test_transfer_fee_valid_types" time="0.000" /><testcase classname="tests.generated.test_fx_generated" name="test_transfer_fee_invalid_type" time="0.001" /></testsuite></testsuites>
