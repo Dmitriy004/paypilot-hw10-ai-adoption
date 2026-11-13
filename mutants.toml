@@ -1,0 +1,96 @@
+# Frozen before isolated OpenAI generation. One change per mutant.
+[[mutant]]
+id = "A-01"
+class = "значення тіру"
+file = "app/engines/policy.py"
+find = '"tier2": 0.9'
+replace = '"tier2": 1.5'
+description = "tier2: спред 1.5% замість 0.9%"
+
+[[mutant]]
+id = "A-02"
+class = "значення тіру"
+file = "app/engines/policy.py"
+find = '"tier1": 1.5'
+replace = '"tier1": 0.9'
+description = "tier1: спред 0.9% замість 1.5%"
+
+[[mutant]]
+id = "A-03"
+class = "значення тіру"
+file = "app/engines/policy.py"
+find = '"tier3": 0.5'
+replace = '"tier3": 0.9'
+description = "tier3: спред 0.9% замість 0.5%"
+
+[[mutant]]
+id = "B-01"
+class = "межа EUR 1 000"
+file = "app/engines/fx.py"
+find = 'within = allowance_used_eur + amount_eur <= allowance_total'
+replace = 'within = allowance_used_eur + amount_eur < allowance_total'
+description = "рівно EUR 1000 уже платні (також зачіпає інші тіри)"
+
+[[mutant]]
+id = "B-02"
+class = "межа EUR 1 000"
+file = "app/engines/policy.py"
+find = '"tier2": 1000'
+replace = '"tier2": 999'
+description = "ліміт tier2 зменшено з EUR 1000 до 999"
+
+[[mutant]]
+id = "B-03"
+class = "межа EUR 1 000"
+file = "app/engines/fx.py"
+find = 'within = allowance_used_eur + amount_eur <= allowance_total'
+replace = 'within = amount_eur <= allowance_total'
+description = "попереднє використання ліміту ігнорується"
+
+[[mutant]]
+id = "C-01"
+class = "арифметика"
+file = "app/engines/fx.py"
+find = 'gross = amount * rate'
+replace = 'gross = amount / rate'
+description = "сума ділиться на курс замість множення"
+
+[[mutant]]
+id = "C-02"
+class = "арифметика"
+file = "app/engines/fx.py"
+find = 'spread_amount = gross * spread_pct / 100.0'
+replace = 'spread_amount = gross * spread_pct / 10.0'
+description = "звичайний спред завищено вдесятеро"
+
+[[mutant]]
+id = "C-03"
+class = "арифметика"
+file = "app/engines/fx.py"
+find = 'final_amount=gross - spread_amount)'
+replace = 'final_amount=gross + spread_amount)'
+description = "комісія додається до суми замість віднімання"
+
+[[mutant]]
+id = "D-01"
+class = "форма результату"
+file = "app/engines/fx.py"
+find = 'round(v, 6)'
+replace = 'round(v, 2)'
+description = "серіалізація втрачає точність: 2 знаки замість 6"
+
+[[mutant]]
+id = "D-02"
+class = "форма результату"
+file = "app/engines/fx.py"
+find = 'for k, v in asdict(self).items()}'
+replace = 'for k, v in asdict(self).items() if k != "final_amount"}'
+description = "у словнику відсутній final_amount"
+
+[[mutant]]
+id = "D-03"
+class = "форма результату"
+file = "app/engines/fx.py"
+find = 'allowance_used_before_eur=allowance_used_eur,'
+replace = 'allowance_used_before_eur=0.0,'
+description = "поле історії використання ліміту завжди нульове"
