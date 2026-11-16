@@ -1,0 +1,15 @@
+{
+  "phase": "author_review_of_first_new_generation",
+  "status": "not_started",
+  "start_utc": null,
+  "end_utc": null,
+  "elapsed_seconds": null,
+  "timezone": "Europe/Warsaw",
+  "pauses": [],
+  "worksheet": "experiments/human-repeat/review-log.md",
+  "source_commit": "c161d3cb31dc3f013e16224beb6d5759f601e191",
+  "source_sha256": "72f79054746be5461d69ab11c82f32bc6f4e7a5fa96dac3d859ca5384bd3c0c7",
+  "functions": 10,
+  "per_function_seconds": "to be recorded by author, not allocated from aggregate",
+  "prior_20_review_3_rewrite_minutes_used_for_this_phase": false
+}

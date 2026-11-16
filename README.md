@@ -1,5 +1,7 @@
 # ДЗ10: вимірювання ефекту асистента
 
+**Поточний етап16.11:** [новий авторський повтор](experiments/human-repeat/README.md) — baseline8functions/15PASS із реальним wall timer26хв11с, потім окремий forecast і перша нова OpenAI генерація10functions/10PASS. Потрібне твоє timed review; нові mutation scores/ROI ще не отримані. Історичні результати нижче не підміняються новим baseline.
+
 Поточний пакет продовжує історію L11 без squash. Головний результат: baseline 9/12, generated 3/12, union 9/12; додаткове виявлення від generated — 0/12. Це вимір на фіксованих штучних змінах, не частота production-збоїв.
 
 - [Impact Report](ai-adoption-impact-report.md), [review усіх початкових функцій](review-log.md), [узагальнений шаблон](ai-adoption-impact-report.generic.md).
