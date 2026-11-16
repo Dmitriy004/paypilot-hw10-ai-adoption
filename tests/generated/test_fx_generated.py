@@ -6,124 +6,111 @@ from app.engines import policy
 
 
 def test_mid_rate_known_currencies():
-    # Use two known currencies from policy.RATES_TO_EUR
-    c1, c2 = list(policy.RATES_TO_EUR.keys())[:2]
-    expected = policy.RATES_TO_EUR[c1] / policy.RATES_TO_EUR[c2]
-    assert fx.mid_rate(c1, c2) == expected
+    # Use known currencies from policy.RATES_TO_EUR
+    for from_cur in policy.RATES_TO_EUR:
+        for to_cur in policy.RATES_TO_EUR:
+            rate = fx.mid_rate(from_cur, to_cur)
+            expected = policy.RATES_TO_EUR[from_cur] / policy.RATES_TO_EUR[to_cur]
+            assert rate == expected
 
 
-def test_mid_rate_unknown_currency():
-    with pytest.raises(ValueError, match="Unknown currency: XXX"):
+def test_mid_rate_unknown_currency_raises():
+    with pytest.raises(ValueError, match="Unknown currency"):
         fx.mid_rate("XXX", "EUR")
-    with pytest.raises(ValueError, match="Unknown currency: YYY"):
-        fx.mid_rate("USD", "YYY")
+    with pytest.raises(ValueError, match="Unknown currency"):
+        fx.mid_rate("EUR", "YYY")
 
 
-@pytest.mark.parametrize("tier", list(policy.TIERS))
-def test_quote_valid_tiers_no_spread(tier):
-    # Use a known currency pair and amount within allowance
-    from_currency = "USD"
-    to_currency = "EUR"
+def test_quote_unknown_tier_raises():
+    with pytest.raises(ValueError, match="Unknown tier"):
+        fx.quote(100, "EUR", "USD", "unknown_tier")
+
+
+def test_quote_within_allowance_no_spread():
+    tier = next(iter(policy.TIERS))
     amount = 10.0
-    allowance_used_eur = 0.0
-
-    # Ensure tier is valid, and allowance is large enough
-    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
-    amount_eur = policy.to_eur(amount, from_currency)
-    # Use amount small enough to be inside allowance
-    if amount_eur > allowance_total:
-        amount = allowance_total / policy.RATES_TO_EUR[from_currency] / 2
-
-    quote_obj = fx.quote(amount, from_currency, to_currency, tier, allowance_used_eur)
-    assert quote_obj.from_currency == from_currency
-    assert quote_obj.to_currency == to_currency
-    assert quote_obj.tier == tier
-    assert quote_obj.allowance_applied is True
-    assert quote_obj.spread_pct == 0.0
-    assert abs(quote_obj.final_amount - (quote_obj.gross_amount)) < 1e-6
+    from_cur = next(iter(policy.RATES_TO_EUR))
+    to_cur = from_cur
+    allowance = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
+    # Use amount such that allowance_used + amount_eur <= allowance_total
+    amount_eur = policy.to_eur(amount, from_cur)
+    allowance_used = allowance - amount_eur
+    q = fx.quote(amount, from_cur, to_cur, tier, allowance_used_eur=allowance_used)
+    assert q.allowance_applied is True
+    assert q.spread_pct == 0.0
+    assert q.final_amount == pytest.approx(q.gross_amount)
 
 
-def test_quote_invalid_tier():
-    with pytest.raises(ValueError, match="Unknown tier: invalid"):
-        fx.quote(10, "USD", "EUR", "invalid")
-
-
-def test_quote_spread_applied_when_over_allowance():
-    tier = list(policy.TIERS)[0]
-    from_currency = "USD"
-    to_currency = "EUR"
-    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
-
-    # Use amount large enough to exceed allowance
-    amount = (allowance_total + 10) * policy.RATES_TO_EUR[from_currency] * 2
-    allowance_used_eur = 0.0
-
-    q = fx.quote(amount, from_currency, to_currency, tier, allowance_used_eur)
+def test_quote_exceed_allowance_default_spread():
+    tier = next(iter(policy.TIERS))
+    amount = 1000.0
+    from_cur = next(iter(policy.RATES_TO_EUR))
+    to_cur = from_cur
+    allowance = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
+    allowance_used = 0.0
+    q = fx.quote(amount, from_cur, to_cur, tier, allowance_used_eur=allowance_used)
     assert q.allowance_applied is False
     assert q.spread_pct == policy.FX_SPREAD_PCT[tier]
-    assert q.spread_amount > 0
-    assert q.final_amount < q.gross_amount
+    assert q.spread_amount == pytest.approx(q.gross_amount * q.spread_pct / 100)
 
 
-def test_quote_partial_allowance_true():
-    tier = list(policy.TIERS)[0]
-    from_currency = "USD"
-    to_currency = "EUR"
-    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
-
-    # Set allowance used so that partial allowance applies
-    allowance_used_eur = allowance_total / 2
-    amount_eur = allowance_total  # amount_eur > remaining allowance
-    amount = amount_eur * policy.RATES_TO_EUR[from_currency]
-
-    q = fx.quote(amount, from_currency, to_currency, tier,
-                 allowance_used_eur=allowance_used_eur, partial_allowance=True)
-    assert q.allowance_applied is False
-    # Spread amount should be less than full spread on gross amount
-    full_spread_amount = q.gross_amount * q.spread_pct / 100.0
-    assert 0 < q.spread_amount < full_spread_amount
-
-
-def test_quote_partial_allowance_false():
-    tier = list(policy.TIERS)[0]
-    from_currency = "USD"
-    to_currency = "EUR"
-    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
-
-    allowance_used_eur = allowance_total + 1
+def test_quote_exceed_allowance_spread_override():
+    tier = next(iter(policy.TIERS))
     amount = 1000.0
+    from_cur = next(iter(policy.RATES_TO_EUR))
+    to_cur = from_cur
+    allowance_used = 0.0
+    override = 5.0
+    q = fx.quote(amount, from_cur, to_cur, tier,
+                 allowance_used_eur=allowance_used,
+                 spread_pct_override=override)
+    assert q.spread_pct == override
+    assert q.spread_amount == pytest.approx(q.gross_amount * override / 100)
 
-    q = fx.quote(amount, from_currency, to_currency, tier,
-                 allowance_used_eur=allowance_used_eur, partial_allowance=False)
-    assert q.allowance_applied is False
-    full_spread_amount = q.gross_amount * q.spread_pct / 100.0
-    assert abs(q.spread_amount - full_spread_amount) < 1e-6
+
+def test_quote_partial_allowance_applied():
+    tier = next(iter(policy.TIERS))
+    from_cur = next(iter(policy.RATES_TO_EUR))
+    to_cur = from_cur
+    allowance = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]
+    amount = 1000.0
+    # Set allowance_used_eur so partial allowance applies
+    allowance_used = allowance * 0.8
+    q = fx.quote(amount, from_cur, to_cur, tier,
+                 allowance_used_eur=allowance_used,
+                 partial_allowance=True)
+    amount_eur = policy.to_eur(amount, from_cur)
+    remaining_eur = max(0.0, allowance - allowance_used)
+    charged_eur = max(0.0, amount_eur - remaining_eur)
+    charged_share = charged_eur / amount_eur if amount_eur else 0.0
+    expected_spread = q.gross_amount * charged_share * q.spread_pct / 100.0
+    assert q.spread_amount == pytest.approx(expected_spread)
 
 
-def test_fxquote_as_dict_rounds_floats():
-    q = fx.FxQuote(
-        from_currency="USD", to_currency="EUR", amount=1.23456789, mid_rate=1.23456789,
-        tier="tier1", spread_pct=1.23456789, allowance_total_eur=10.1234567,
-        allowance_used_before_eur=5.1234567, allowance_applied=True,
-        gross_amount=2.1234567, spread_amount=0.1234567, final_amount=2.0)
+def test_quote_as_dict_rounds_floats():
+    tier = next(iter(policy.TIERS))
+    from_cur = next(iter(policy.RATES_TO_EUR))
+    to_cur = from_cur
+    q = fx.quote(100.123456789, from_cur, to_cur, tier)
     d = q.as_dict()
     for k, v in d.items():
         if isinstance(v, float):
+            # 6 decimal places
             assert round(v, 6) == v
 
 
-def test_transfer_fee_valid_types():
+def test_transfer_fee_known_types():
     for ttype, (flat, pct) in policy.TRANSFER_FEES.items():
         amount_eur = 100.0
-        fee = fx.transfer_fee(amount_eur, ttype)
-        expected_total = round(flat + amount_eur * pct / 100.0, 2)
-        assert fee["transfer_type"] == ttype
-        assert fee["amount_eur"] == amount_eur
-        assert fee["flat_fee_eur"] == flat
-        assert fee["percent_fee"] == pct
-        assert fee["total_fee_eur"] == expected_total
+        result = fx.transfer_fee(amount_eur, ttype)
+        expected_fee = flat + amount_eur * pct / 100.0
+        assert result["transfer_type"] == ttype
+        assert result["amount_eur"] == amount_eur
+        assert result["flat_fee_eur"] == flat
+        assert result["percent_fee"] == pct
+        assert result["total_fee_eur"] == round(expected_fee, 2)
 
 
-def test_transfer_fee_invalid_type():
-    with pytest.raises(ValueError, match="Unknown transfer type: invalid"):
-        fx.transfer_fee(100.0, "invalid")
+def test_transfer_fee_unknown_type_raises():
+    with pytest.raises(ValueError, match="Unknown transfer type"):
+        fx.transfer_fee(100.0, "unknown_type")

@@ -1,15 +1,15 @@
 {
   "format": "openai-responses-artifact-v1",
-  "provider": "openai",
-  "packaging_note": "Historical first L11 OpenAI generation; envelope assembled for HW10, not another API call and not Claude output. Exact original bytes remain in reports/openai-generation/response.json.",
+  "provider": "OpenAI",
+  "packaging_note": "Recorded first response of the author-baseline repeat, 2026-11-16; raw committed c161d3cb31dc3f013e16224beb6d5759f601e191 before execution. Promoted with explicit user permission after review. Historical 2026-11-13 envelope remains at 24d88b38ba767bf93e29749024faf1078ef4aebd:reports/generation.json and reports/openai-generation/ remains unchanged. No new API call.",
   "metadata": {
-    "started_at": "2026-11-13T17:40:31.326538+01:00",
+    "started_at": "2026-11-16T21:51:14.225517+00:00",
     "model_requested": "gpt-4.1-mini-2025-04-14",
     "attempts": 1,
     "automatic_retries": 0,
     "payload_sha256": "fbad640f1cbb9db373d12cc00f3993b54c8681e03a0ca90ff274f8a169eb3771",
     "budget_upper_estimate_usd": 0.0140412,
-    "source_commit": "b305baa18be67cf6065274f276477e2933163589",
+    "source_commit": "16d6611e5da780c37a0501b5570be3912f72bd4c",
     "sources": {
       "prompts/generation-prompt.md": "c7092077d5b19799734408a48cceef060239e8b3a793e6440f9fbb32773fe166",
       "app/engines/fx.py": "b0a2262dc6b3da959bb9b87cdd9ee3a2f77447b6d4eb04ba78dd206cd88e51b2"
@@ -22,43 +22,47 @@
     },
     "billing_reconciled": false,
     "http_status": 200,
-    "request_id": "req_21167f0032c2449d9630a473ebb44fae",
-    "response_sha256": "b936435ab7562567d0a92e05dcdcd66f9f2240325393c1fcef7b7c7acaccd9c0",
-    "response_id": "resp_0680a0a41b1ec11d016af73d975ec487d289f1a5bbbee6a6ee",
+    "request_id": "req_aeefce9c3bea4ffe84edd674488cf81a",
+    "response_sha256": "f2bca56eead595a10c23cafca379ab984897c5d06da74c5eeaf25a5deafff17a",
+    "response_id": "resp_0d7c81288057b0c8016afb7aed144487d2b2b773c21fc2e69b",
     "model_returned": "gpt-4.1-mini-2025-04-14",
     "usage": {
       "input_tokens": 795,
       "input_tokens_details": {
         "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
         "cached_tokens": 0
       },
-      "output_tokens": 1408,
+      "output_tokens": 1140,
       "output_tokens_details": {
         "reasoning_tokens": 0
       },
-      "total_tokens": 2203
+      "total_tokens": 1935
     },
     "response_status": "completed",
     "service_tier": "default",
-    "usage_cost_estimate_usd": 0.0025708000000000003,
-    "code_sha256": "27fc637d40c34f70bf10bd17b41eb2fe1e8802e7b3f1f98c2de5e9b53ac40b97",
+    "usage_cost_estimate_usd": 0.002142,
+    "code_sha256": "72f79054746be5461d69ab11c82f32bc6f4e7a5fa96dac3d859ca5384bd3c0c7",
     "outcome": "completed",
-    "elapsed_seconds": 18.298916700296104,
-    "finished_at": "2026-11-13T17:40:49.690815+01:00"
+    "elapsed_seconds": 15.328343099914491,
+    "finished_at": "2026-11-16T21:51:29.605050+00:00"
   },
   "raw_response": {
-    "id": "resp_0680a0a41b1ec11d016af73d975ec487d289f1a5bbbee6a6ee",
+    "id": "resp_0d7c81288057b0c8016afb7aed144487d2b2b773c21fc2e69b",
     "object": "response",
-    "created_at": 1794588055,
+    "created_at": 1794865901,
     "status": "completed",
     "access_programs": null,
     "background": false,
     "billing": {
       "payer": "developer"
     },
-    "completed_at": 1794588071,
+    "completed_at": 1794865914,
     "error": null,
-    "frequency_penalty": 0.0,
+    "frequency_penalty": 0,
     "image": {
       "context_compression": "disabled"
     },
@@ -71,7 +75,7 @@
     "moderation": null,
     "output": [
       {
-        "id": "msg_0680a0a41b1ec11d016af73d986ee887d282b5a83e08b99ef9",
+        "id": "msg_0d7c81288057b0c8016afb7aee14c487d28d9a8a7cbe217b86",
         "type": "message",
         "status": "completed",
         "content": [
@@ -79,14 +83,14 @@
             "type": "output_text",
             "annotations": [],
             "logprobs": [],
-            "text": "```python\n# tests/generated/test_fx_generated.py\nimport pytest\n\nfrom app.engines import fx\nfrom app.engines import policy\n\n\ndef test_mid_rate_known_currencies():\n    # Use two known currencies from policy.RATES_TO_EUR\n    c1, c2 = list(policy.RATES_TO_EUR.keys())[:2]\n    expected = policy.RATES_TO_EUR[c1] / policy.RATES_TO_EUR[c2]\n    assert fx.mid_rate(c1, c2) == expected\n\n\ndef test_mid_rate_unknown_currency():\n    with pytest.raises(ValueError, match=\"Unknown currency: XXX\"):\n        fx.mid_rate(\"XXX\", \"EUR\")\n    with pytest.raises(ValueError, match=\"Unknown currency: YYY\"):\n        fx.mid_rate(\"USD\", \"YYY\")\n\n\n@pytest.mark.parametrize(\"tier\", list(policy.TIERS))\ndef test_quote_valid_tiers_no_spread(tier):\n    # Use a known currency pair and amount within allowance\n    from_currency = \"USD\"\n    to_currency = \"EUR\"\n    amount = 10.0\n    allowance_used_eur = 0.0\n\n    # Ensure tier is valid, and allowance is large enough\n    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    amount_eur = policy.to_eur(amount, from_currency)\n    # Use amount small enough to be inside allowance\n    if amount_eur > allowance_total:\n        amount = allowance_total / policy.RATES_TO_EUR[from_currency] / 2\n\n    quote_obj = fx.quote(amount, from_currency, to_currency, tier, allowance_used_eur)\n    assert quote_obj.from_currency == from_currency\n    assert quote_obj.to_currency == to_currency\n    assert quote_obj.tier == tier\n    assert quote_obj.allowance_applied is True\n    assert quote_obj.spread_pct == 0.0\n    assert abs(quote_obj.final_amount - (quote_obj.gross_amount)) < 1e-6\n\n\ndef test_quote_invalid_tier():\n    with pytest.raises(ValueError, match=\"Unknown tier: invalid\"):\n        fx.quote(10, \"USD\", \"EUR\", \"invalid\")\n\n\ndef test_quote_spread_applied_when_over_allowance():\n    tier = list(policy.TIERS)[0]\n    from_currency = \"USD\"\n    to_currency = \"EUR\"\n    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n\n    # Use amount large enough to exceed allowance\n    amount = (allowance_total + 10) * policy.RATES_TO_EUR[from_currency] * 2\n    allowance_used_eur = 0.0\n\n    q = fx.quote(amount, from_currency, to_currency, tier, allowance_used_eur)\n    assert q.allowance_applied is False\n    assert q.spread_pct == policy.FX_SPREAD_PCT[tier]\n    assert q.spread_amount > 0\n    assert q.final_amount < q.gross_amount\n\n\ndef test_quote_spread_pct_override():\n    tier = list(policy.TIERS)[0]\n    from_currency = \"USD\"\n    to_currency = \"EUR\"\n    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n\n    amount = (allowance_total + 10) * policy.RATES_TO_EUR[from_currency]\n    override_spread = 5.5\n\n    q = fx.quote(amount, from_currency, to_currency, tier,\n                 allowance_used_eur=0.0, spread_pct_override=override_spread)\n    assert q.spread_pct == override_spread\n\n\ndef test_quote_partial_allowance_true():\n    tier = list(policy.TIERS)[0]\n    from_currency = \"USD\"\n    to_currency = \"EUR\"\n    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n\n    # Set allowance used so that partial allowance applies\n    allowance_used_eur = allowance_total / 2\n    amount_eur = allowance_total  # amount_eur > remaining allowance\n    amount = amount_eur * policy.RATES_TO_EUR[from_currency]\n\n    q = fx.quote(amount, from_currency, to_currency, tier,\n                 allowance_used_eur=allowance_used_eur, partial_allowance=True)\n    assert q.allowance_applied is False\n    # Spread amount should be less than full spread on gross amount\n    full_spread_amount = q.gross_amount * q.spread_pct / 100.0\n    assert 0 < q.spread_amount < full_spread_amount\n\n\ndef test_quote_partial_allowance_false():\n    tier = list(policy.TIERS)[0]\n    from_currency = \"USD\"\n    to_currency = \"EUR\"\n    allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n\n    allowance_used_eur = allowance_total + 1\n    amount = 1000.0\n\n    q = fx.quote(amount, from_currency, to_currency, tier,\n                 allowance_used_eur=allowance_used_eur, partial_allowance=False)\n    assert q.allowance_applied is False\n    full_spread_amount = q.gross_amount * q.spread_pct / 100.0\n    assert abs(q.spread_amount - full_spread_amount) < 1e-6\n\n\ndef test_fxquote_as_dict_rounds_floats():\n    q = fx.FxQuote(\n        from_currency=\"USD\", to_currency=\"EUR\", amount=1.23456789, mid_rate=1.23456789,\n        tier=\"tier1\", spread_pct=1.23456789, allowance_total_eur=10.1234567,\n        allowance_used_before_eur=5.1234567, allowance_applied=True,\n        gross_amount=2.1234567, spread_amount=0.1234567, final_amount=2.0)\n    d = q.as_dict()\n    for k, v in d.items():\n        if isinstance(v, float):\n            assert round(v, 6) == v\n\n\ndef test_transfer_fee_valid_types():\n    for ttype, (flat, pct) in policy.TRANSFER_FEES.items():\n        amount_eur = 100.0\n        fee = fx.transfer_fee(amount_eur, ttype)\n        expected_total = round(flat + amount_eur * pct / 100.0, 2)\n        assert fee[\"transfer_type\"] == ttype\n        assert fee[\"amount_eur\"] == amount_eur\n        assert fee[\"flat_fee_eur\"] == flat\n        assert fee[\"percent_fee\"] == pct\n        assert fee[\"total_fee_eur\"] == expected_total\n\n\ndef test_transfer_fee_invalid_type():\n    with pytest.raises(ValueError, match=\"Unknown transfer type: invalid\"):\n        fx.transfer_fee(100.0, \"invalid\")\n```\n"
+            "text": "```python\n# tests/generated/test_fx_generated.py\nimport pytest\n\nfrom app.engines import fx\nfrom app.engines import policy\n\n\ndef test_mid_rate_known_currencies():\n    # Use known currencies from policy.RATES_TO_EUR\n    for from_cur in policy.RATES_TO_EUR:\n        for to_cur in policy.RATES_TO_EUR:\n            rate = fx.mid_rate(from_cur, to_cur)\n            expected = policy.RATES_TO_EUR[from_cur] / policy.RATES_TO_EUR[to_cur]\n            assert rate == expected\n\n\ndef test_mid_rate_unknown_currency_raises():\n    with pytest.raises(ValueError, match=\"Unknown currency\"):\n        fx.mid_rate(\"XXX\", \"EUR\")\n    with pytest.raises(ValueError, match=\"Unknown currency\"):\n        fx.mid_rate(\"EUR\", \"YYY\")\n\n\ndef test_quote_unknown_tier_raises():\n    with pytest.raises(ValueError, match=\"Unknown tier\"):\n        fx.quote(100, \"EUR\", \"USD\", \"unknown_tier\")\n\n\ndef test_quote_within_allowance_no_spread():\n    tier = next(iter(policy.TIERS))\n    amount = 10.0\n    from_cur = next(iter(policy.RATES_TO_EUR))\n    to_cur = from_cur\n    allowance = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    # Use amount such that allowance_used + amount_eur <= allowance_total\n    amount_eur = policy.to_eur(amount, from_cur)\n    allowance_used = allowance - amount_eur\n    q = fx.quote(amount, from_cur, to_cur, tier, allowance_used_eur=allowance_used)\n    assert q.allowance_applied is True\n    assert q.spread_pct == 0.0\n    assert q.final_amount == pytest.approx(q.gross_amount)\n\n\ndef test_quote_exceed_allowance_default_spread():\n    tier = next(iter(policy.TIERS))\n    amount = 1000.0\n    from_cur = next(iter(policy.RATES_TO_EUR))\n    to_cur = from_cur\n    allowance = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    allowance_used = 0.0\n    q = fx.quote(amount, from_cur, to_cur, tier, allowance_used_eur=allowance_used)\n    assert q.allowance_applied is False\n    assert q.spread_pct == policy.FX_SPREAD_PCT[tier]\n    assert q.spread_amount == pytest.approx(q.gross_amount * q.spread_pct / 100)\n\n\ndef test_quote_exceed_allowance_spread_override():\n    tier = next(iter(policy.TIERS))\n    amount = 1000.0\n    from_cur = next(iter(policy.RATES_TO_EUR))\n    to_cur = from_cur\n    allowance_used = 0.0\n    override = 5.0\n    q = fx.quote(amount, from_cur, to_cur, tier,\n                 allowance_used_eur=allowance_used,\n                 spread_pct_override=override)\n    assert q.spread_pct == override\n    assert q.spread_amount == pytest.approx(q.gross_amount * override / 100)\n\n\ndef test_quote_partial_allowance_applied():\n    tier = next(iter(policy.TIERS))\n    from_cur = next(iter(policy.RATES_TO_EUR))\n    to_cur = from_cur\n    allowance = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    amount = 1000.0\n    # Set allowance_used_eur so partial allowance applies\n    allowance_used = allowance * 0.8\n    q = fx.quote(amount, from_cur, to_cur, tier,\n                 allowance_used_eur=allowance_used,\n                 partial_allowance=True)\n    amount_eur = policy.to_eur(amount, from_cur)\n    remaining_eur = max(0.0, allowance - allowance_used)\n    charged_eur = max(0.0, amount_eur - remaining_eur)\n    charged_share = charged_eur / amount_eur if amount_eur else 0.0\n    expected_spread = q.gross_amount * charged_share * q.spread_pct / 100.0\n    assert q.spread_amount == pytest.approx(expected_spread)\n\n\ndef test_quote_as_dict_rounds_floats():\n    tier = next(iter(policy.TIERS))\n    from_cur = next(iter(policy.RATES_TO_EUR))\n    to_cur = from_cur\n    q = fx.quote(100.123456789, from_cur, to_cur, tier)\n    d = q.as_dict()\n    for k, v in d.items():\n        if isinstance(v, float):\n            # 6 decimal places\n            assert round(v, 6) == v\n\n\ndef test_transfer_fee_known_types():\n    for ttype, (flat, pct) in policy.TRANSFER_FEES.items():\n        amount_eur = 100.0\n        result = fx.transfer_fee(amount_eur, ttype)\n        expected_fee = flat + amount_eur * pct / 100.0\n        assert result[\"transfer_type\"] == ttype\n        assert result[\"amount_eur\"] == amount_eur\n        assert result[\"flat_fee_eur\"] == flat\n        assert result[\"percent_fee\"] == pct\n        assert result[\"total_fee_eur\"] == round(expected_fee, 2)\n\n\ndef test_transfer_fee_unknown_type_raises():\n    with pytest.raises(ValueError, match=\"Unknown transfer type\"):\n        fx.transfer_fee(100.0, \"unknown_type\")\n```\n"
           }
         ],
         "role": "assistant"
       }
     ],
     "parallel_tool_calls": true,
-    "presence_penalty": 0.0,
+    "presence_penalty": 0,
     "previous_response_id": null,
     "prompt_cache_key": null,
     "prompt_cache_retention": "in_memory",
@@ -126,19 +130,23 @@
     },
     "tools": [],
     "top_logprobs": 0,
-    "top_p": 1.0,
+    "top_p": 1,
     "truncation": "disabled",
     "usage": {
       "input_tokens": 795,
       "input_tokens_details": {
         "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
         "cached_tokens": 0
       },
-      "output_tokens": 1408,
+      "output_tokens": 1140,
       "output_tokens_details": {
         "reasoning_tokens": 0
       },
-      "total_tokens": 2203
+      "total_tokens": 1935
     },
     "user": null,
     "metadata": {}

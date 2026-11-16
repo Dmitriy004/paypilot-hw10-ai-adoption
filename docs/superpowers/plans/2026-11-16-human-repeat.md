@@ -9,7 +9,7 @@
 
 ## Global Constraints
 
-One paid attempt≤$0.05; existing$0.03 upper-bound guard unchanged. No historical app/tests/prompts/mutants/report edits. User baseline bytes unchanged. No assistant review verdicts before user review. No publication/submission in this stage.
+One paid attempt≤$0.05; existing$0.03 upper-bound guard unchanged. Historical source snapshots/reports remain preserved; app/prompts/mutants unchanged. User baseline and raw generation unchanged apart from Git EOL normalization at promotion. No assistant review verdicts before user review. Publication/submission only after verification and under existing user authorization.
 
 ## Review Focus
 
@@ -36,3 +36,13 @@ One paid attempt≤$0.05; existing$0.03 upper-bound guard unchanged. No historic
 - [ ] Prepare numbered blank review worksheet; open it and raw source in IDE, let author explicitly start timed review and report per-function time/rewrites.
 - [ ] Update/stage final-project LRA7/EvidenceMap/README partial progress with exact local commits; no claims of finished full experiment.
 - [ ] Whole-range fresh read-only review when implementation stage ends; full offline suite and frozen user SHA remain green; hand off author participation.
+
+### Task 3: Approved promotion and paired measurements
+
+User explicitly authorized switching tests/manual, tests/generated and tests/rewritten to the saved repeat after the safety block; historical commits/reports remain available. Review amendments are frozen at24d88b3. This extends the earlier handoff plan, not its original constraints retroactively.
+
+- [ ] Promote saved suites unchanged and package the already recorded new response in reports/generation.json; no new paid call. Verify Git-normalized equality, full suite and summary, then freeze a technical commit before mutation runs.
+- [ ] Run unchanged runner on manual/generated/all against the same frozen12 list; keep new timestamped reports distinct. Measure coverage into reports/human-repeat, verify every kill is assertion-based and audit forecasts without editing them.
+- [ ] Update ten-section impact report, full review journal, readiness and reproducibility docs with actual metrics, all human workflow overhead, limitations and historical scope. Preserve raw green rejected tests; rewritten stays outside comparators.
+- [ ] Freeze deliverables, clone that exact revision into a separate temporary directory, install/check pinned requirements and run the required offline cascade. Record proof without inventing remote publication.
+- [ ] One fresh-context whole-range read-only review; address important findings with verification. Update/stage aiq-final LRA7/EvidenceMap/README exact evidence; no LRA7 completion without L14.
