@@ -14,15 +14,15 @@
 
 | ID | Функція | Verdict | Criterion | Причина | Action | Review, секунд | Rewrite, секунд |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| HR-G01 | test_mid_rate_known_currencies | | | | | | |
-| HR-G02 | test_mid_rate_unknown_currency_raises | | | | | | |
-| HR-G03 | test_quote_unknown_tier_raises | | | | | | |
-| HR-G04 | test_quote_within_allowance_no_spread | | | | | | |
-| HR-G05 | test_quote_exceed_allowance_default_spread | | | | | | |
-| HR-G06 | test_quote_exceed_allowance_spread_override | | | | | | |
-| HR-G07 | test_quote_partial_allowance_applied | | | | | | |
-| HR-G08 | test_quote_as_dict_rounds_floats | | | | | | |
-| HR-G09 | test_transfer_fee_known_types | | | | | | |
-| HR-G10 | test_transfer_fee_unknown_type_raises | | | | | | |
+| HR-G01 | test_mid_rate_known_currencies | rejected | Oracle | Очікуваний курс обчислюється за тією самою формулою, що й production-код. Незалежний oracle відсутній. | окремий rewrite — виконано | 23 | 60 |
+| HR-G02 | test_mid_rate_unknown_currency_raises | accepted | Exceptions (Oracle N/A) | Перевірено невідомі вихідну та цільову валюти, тип винятку й повідомлення. | as-is | 9 | не робив |
+| HR-G03 | test_quote_unknown_tier_raises | accepted | Exceptions (Oracle N/A) | Перевірено, що невідомий тариф спричиняє ValueError з очікуваним повідомленням. | as-is | 16 | не робив |
+| HR-G04 | test_quote_within_allowance_no_spread | accepted | Boundary | Перевірено точну межу безкоштовного ліміту, нульовий спред і відсутність комісії. | as-is | 17 | не робив |
+| HR-G05 | test_quote_exceed_allowance_default_spread | accepted | Arithmetic | Перевірено перевищення безкоштовного ліміту, застосування стандартного спреду тарифу та правильність розрахунку комісії. | as-is | 12 | не робив |
+| HR-G06 | test_quote_exceed_allowance_spread_override | accepted | Arithmetic | Перевірено застосування перевизначеного спреду 5% та правильність розрахунку spread_amount. | as-is | 10 | не робив |
+| HR-G07 | test_quote_partial_allowance_applied | rejected | Oracle | Очікуваний результат повторює формулу production-коду. Відсутній незалежний числовий oracle для часткового застосування ліміту. | окремий rewrite — виконано | 25 | 81 |
+| HR-G08 | test_quote_as_dict_rounds_floats | rejected | Oracle | Перевірка підтверджує лише округлення вже повернутих значень. Немає порівняння з наперед визначеними очікуваними значеннями та перевірки повноти структури. | окремий rewrite — виконано | 32 | 63 |
+| HR-G09 | test_transfer_fee_known_types | accepted | Arithmetic | Перевірено компоненти комісії, підсумкову суму та структуру результату для всіх підтримуваних типів переказів. | as-is | 15 | не робив |
+| HR-G10 | test_transfer_fee_unknown_type_raises | accepted | Exceptions (Oracle N/A) | Перевірено тип винятку ValueError і повідомлення для невідомого типу переказу. | as-is | 10 | не робив |
 
 Таблиця підготовлена асистентом лише як порожня форма за AST/іменами функцій. Вердикти, причини, actions і фактичні секунди заповнює автор; цей файл поки не є завершеним review.
