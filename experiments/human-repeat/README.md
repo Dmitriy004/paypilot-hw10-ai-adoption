@@ -25,6 +25,6 @@ ForecastgeneratedочікувавB-03/C-02/C-03,фактB-01/C-02.Розбірв
 .venv/Scripts/python.exe tools/generation_summary.py reports/generation.json
 ~~~
 
-Післяpromotioncomparator+rewritten31PASS;full45PASS(14infrastructureокремо).Новийcleanclonepending;історичніproofsнепереносятьсянацейкод.[Готовність](../../submission-readiness.md)фіксуєпрогалинустандартноїpath-хронологіїйпопереднєзнайомствоавторазhistoricalдослідом.Безрішенняментораповнувідповідністьнезаявляємо.
+Після promotion comparator+rewritten31PASS; full45PASS (14infrastructure окремо). Новий чистий clone source124c8b7 перевірено:manual15/generated10/full45PASS,union10/12; [доказ](../../chain-ready.md). Історичні proofs не переносяться на цей код. [Готовність](../../submission-readiness.md) фіксує прогалину стандартної path-хронології й попереднє знайомство автора з historical дослідом. Без рішення ментора повну відповідність не заявляємо.
 
 Hashes:baseline8f1999ea58e3c515d7fd82a14ec5362dea76c307cdebfc5615155b03d437c7da;raw72f79054746be5461d69ab11c82f32bc6f4e7a5fa96dac3d859ca5384bd3c0c7;responsef2bca56eead595a10c23cafca379ab984897c5d06da74c5eeaf25a5deafff17a.Canonicalhashes—[measurement-summary.json](../../reports/human-repeat/measurement-summary.json).

@@ -1,6 +1,22 @@
-# Новий повтор: clean-clone перевірка ще виконується
+# Новий повтор: чистий локальний clone перевірено
 
-Source55f6795:manual15/generated10/rewritten6/infrastructure14=45PASS. Нижче **історичний** proof source11422fc; він не є новим перевірочним прогоном. Новий доказ буде додано після фактичного запуску; його mutation report не переноситиметься у source repository.
+17.11.2026, завершено о00:08:37 Europe/Warsaw. Source commit **124c8b71a7795771d7a2a05e82d07d6e446aa064**; після цього змінювались лише документи. Новий clone: `C:/Users/Admin/AppData/Local/Temp/paypilot-hw10-repeat-check-pb__cuwx/kit`. Створено через git clone --no-hardlinks --branch codex/hw10-ai-adoption; HEAD збігся з source, initial git status порожній. Створено окрему venv, встановлено requirements.txt.
+
+| Команда у новому clone | Факт | Exit |
+| --- | --- | --- |
+| python -m venv .venv | Нова venv |0 |
+| .venv/Scripts/python.exe -m pip install -r requirements.txt | Pinned залежності встановлені |0 |
+| .venv/Scripts/python.exe -m pytest tests/manual |15passed in0.11s |0 |
+| .venv/Scripts/python.exe -m pytest tests/generated |10passed in0.06s |0 |
+| .venv/Scripts/python.exe -m pytest -q |45passed in0.72s |0 |
+| .venv/Scripts/python.exe tools/generation_summary.py reports/generation.json |15.328343с,$0.00214200estimate,raw10/retained10,billingFalse |0 |
+| .venv/Scripts/python.exe tools/run_mutants.py --set all |originalgreen,10/12kills;D-01,D-02survive |0 |
+
+Union класи:3/3,3/3,3/3,1/3; список6c58594,uncommitted=false,head124c8b7. Full suite45=manual15+generated10+rewritten6+infrastructure14. Rewritten/infrastructure/proxy не входять до union. Python3.12.14/pytest9.2.0/pytest-cov7.1.0/coverage7.17.3. Tracked git status після команд порожній. Ключі/стенд не потрібні, paid calls0.
+
+Перевірочний `reports/mutants-all-20261116-230825Z.json` лишився **тільки у check clone**, як вимагає курс; його SHA256 **a87ed2a5b965dc05d3024c2ba3e8a450ac7ffd6dd6bf4399d7165bb2b5e4d6b3**. Повний локальний журнал команд: `C:/Users/Admin/AppData/Local/Temp/paypilot-hw10-repeat-check-pb__cuwx/proof.json`; він не скопійований і не закомічений до здачі. Це локальний proof, не public CI або доказ відповідності всім умовам протоколу; [відкрита прогалина хронології](submission-readiness.md).
+
+## Історична перевірка попереднього source
 
 ---
 
