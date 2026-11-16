@@ -1,0 +1,48 @@
+{
+  "started_at": "2026-11-16T21:51:14.225517+00:00",
+  "model_requested": "gpt-4.1-mini-2025-04-14",
+  "attempts": 1,
+  "automatic_retries": 0,
+  "payload_sha256": "fbad640f1cbb9db373d12cc00f3993b54c8681e03a0ca90ff274f8a169eb3771",
+  "budget_upper_estimate_usd": 0.0140412,
+  "source_commit": "16d6611e5da780c37a0501b5570be3912f72bd4c",
+  "sources": {
+    "prompts/generation-prompt.md": "c7092077d5b19799734408a48cceef060239e8b3a793e6440f9fbb32773fe166",
+    "app/engines/fx.py": "b0a2262dc6b3da959bb9b87cdd9ee3a2f77447b6d4eb04ba78dd206cd88e51b2"
+  },
+  "pricing_url": "https://developers.openai.com/api/docs/pricing",
+  "rates_usd_per_million": {
+    "input": 0.4,
+    "cached_input": 0.1,
+    "output": 1.6
+  },
+  "billing_reconciled": false,
+  "http_status": 200,
+  "request_id": "req_aeefce9c3bea4ffe84edd674488cf81a",
+  "response_sha256": "f2bca56eead595a10c23cafca379ab984897c5d06da74c5eeaf25a5deafff17a",
+  "response_id": "resp_0d7c81288057b0c8016afb7aed144487d2b2b773c21fc2e69b",
+  "model_returned": "gpt-4.1-mini-2025-04-14",
+  "usage": {
+    "input_tokens": 795,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      },
+      "cached_tokens": 0
+    },
+    "output_tokens": 1140,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1935
+  },
+  "response_status": "completed",
+  "service_tier": "default",
+  "usage_cost_estimate_usd": 0.002142,
+  "code_sha256": "72f79054746be5461d69ab11c82f32bc6f4e7a5fa96dac3d859ca5384bd3c0c7",
+  "outcome": "completed",
+  "elapsed_seconds": 15.328343099914491,
+  "finished_at": "2026-11-16T21:51:29.605050+00:00"
+}
