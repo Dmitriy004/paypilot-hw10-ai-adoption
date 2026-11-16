@@ -182,9 +182,9 @@ Generated слабкий у тарифах та формі; baseline — у фо
 
 **Декларація AI:** асистент допоміг із baseline, списком мутантів, ізольованим OpenAI викликом, рев'ю/rewritten, аналізом і звітом. Відхилені G-01/04/05/06/07/08/09/10; тільки original-red G-06 видалено. Raw output/history збережені; самостійного людського baseline і таймера не заявляємо. Пізніші AI-замірювання не підставляються як людські. Узагальнений шаблон — `ai-adoption-impact-report.generic.md`, regex ДЗ дає0збігів. Нових API-викликів для цього ДЗ не було; опційну повторну генерацію не виконували.
 
-Підтверджений попередній clean clone L11: be298e3,34/34PASS,union9/12; reports/clean-clone.json — історичний proof, не перевірка нової версії ДЗ. У новій версії full suite37tests (12infrastructure поза comparator). Нову clean-clone перевірку поточної версії буде зафіксовано в `chain-ready.md`; її mutant report залишається у тимчасовому clone, не комітиться до здачі.
+Підтверджений попередній clean clone L11: be298e3,34/34PASS,union9/12; reports/clean-clone.json — історичний proof. **Нова перевірка16.11** source11422fc: fresh venv,manual9PASS/generated12PASS/full37PASS,union9/12. Точні результати — [chain-ready.md](chain-ready.md); новий mutant report залишається у тимчасовому clone, не комітиться до здачі. У full suite12infrastructure cases поза comparator.
 
-| Потрібна команда в чистому clone | Очікуваний результат |
+| Виконана команда в чистому clone | Отриманий результат |
 | --- | --- |
 | pip install -r requirements.txt | pinned pytest/pytest-cov installed |
 | pytest tests/manual | 9PASS |
