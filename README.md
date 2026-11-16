@@ -8,7 +8,7 @@
 - [Статус рубрики](submission-readiness.md), [чистий clone](chain-ready.md), [узагальнений шаблон](ai-adoption-impact-report.generic.md).
 - [Первинні джерела нового повтору](experiments/human-repeat/README.md).
 
-**Повну відповідність рубриці не заявлено.** Baseline source a05b304 передує новому raw c161d3c, проте canonical tests/manual/generated перенесені разом пізніше55f6795; автор уже знав історичний дослід. Потрібне рішення ментора про допустимість повтору й альтернативного доказу source-freeze, не підгонка історії. Новий clean clone source124c8b7 перевірено:manual15/generated10/full45PASS,union10/12; докладно[chain-ready](chain-ready.md). Публічного origin/відправки немає.
+**Повну відповідність рубриці не заявлено.** Baseline source a05b304 передує новому raw c161d3c, проте canonical tests/manual/generated перенесені разом пізніше55f6795; автор уже знав історичний дослід. Потрібне рішення ментора про допустимість повтору й альтернативного доказу source-freeze, не підгонка історії. Новий clean clone source124c8b7 перевірено:manual15/generated10/full45PASS,union10/12; докладно[chain-ready](chain-ready.md). Публічний репозиторій: [Dmitriy004/paypilot-hw10-ai-adoption](https://github.com/Dmitriy004/paypilot-hw10-ai-adoption), гілка main. Користувач доручив надіслати поточний пакет з описаним обмеженням; це не погодження протоколу ментором. Фактичне LMS-підтвердження фіксується окремо після відправки.
 
 Стандартні набори тепер відповідають новому повтору. Старий root report/envelope доступний у24d88b3; reports/openai-generation/,старі coverage-*.json і mutants-*-20261113-* — **історичні**. Нові coverage/audit/summary — reports/human-repeat/; нові primary reports — mutants-*-20261116-225513Z.json. Rewritten/infrastructure/proxy поза comparators.
 
