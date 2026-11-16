@@ -10,7 +10,7 @@
 | 4. Розбивка | PASS |4класи×3набори,10/12–2/12–10/12; survivors; coverage39/45vs45/45;36/36outcomes підтверджені assertion-аудитом. |
 | 5. Ціна | PASS відомих фаз; не повний end-to-end ROI | Writing26:11;review169с,rejected rewrites141с,accepted strengthening63с,table915с,amendment60с; subtotal22:28. Wall/table attribution/self-report розрізнені. Generation15.3283431с/$0.002142usage. Пізніша координація невиміряна,billing не звірено. |
 | 6. Рішення | Заповнено | Сім конкретних рядків, різні дії за мандатами, події перегляду й L03-ризик; не заявлено встановленого gate або загальної економії. |
-| 7. Каскад | PASS локально; публічний пакет | Новий clean clone source124c8b7:новаvenv/install/manual15/generated10/full45PASS;union10/12;summaryraw10/retained10. Genericregex0;деклараціяє. Checkreportнеперенесенийуsource;доказ[chain-ready.md](chain-ready.md). [Публічнийрепозиторій](https://github.com/Dmitriy004/paypilot-hw10-ai-adoption),main. |
+| 7. Каскад | PASS на clone з GitHub; публічний пакет | GitHubmain source21e546f:новаvenv/install/manual15/generated10/full45PASS;union10/12;summaryraw10/retained10. Genericregex0;деклараціяє. Checkreportнеперенесенийуsource;доказ[chain-ready.md](chain-ready.md). [Публічнийрепозиторій](https://github.com/Dmitriy004/paypilot-hw10-ai-adoption),main. |
 
 **Формальна самоперевірка неповна через критерій1.** Користувач17.11.2026 явно доручив надіслати поточний пакет з уже описаним відступом. Це не замінює погодження ментора на повтор/іншу форму source-freeze доказу. Пізнім комітом чи вигаданими timestamps початковий порядок не виправляється. Нової платної генерації без дозволу не робимо; історію не переписуємо.
 
