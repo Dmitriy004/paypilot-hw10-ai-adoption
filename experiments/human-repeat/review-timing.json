@@ -1,6 +1,6 @@
 {
   "phase": "author_review_of_first_new_generation",
-  "status": "finished_pending_time_reconciliation",
+  "status": "finished_time_reconciled_author_amended",
   "start_utc": "2026-11-16T22:14:35Z",
   "start_local": "2026-11-16T23:14:35+01:00",
   "start_event": "User explicitly said: начинаю ревью; first clock reading on receipt",
@@ -31,7 +31,21 @@
   "rewrite_seconds_sum": 204,
   "recorded_function_work_seconds_sum": 373,
   "unallocated_wall_seconds": 915,
-  "unallocated_wall_explanation": "pending author clarification; not assumed pause or active work",
+  "unallocated_wall_explanation": "Author attributes the 915-second remainder to filling the inconvenient Markdown table; workflow overhead, not a pause. This is an attribution of the derived remainder, not separately stopwatch-measured table-entry time.",
+  "worksheet_entry_overhead_seconds": 915,
+  "worksheet_entry_overhead_source": "author clarification in chat; elapsed_seconds minus recorded_function_work_seconds_sum",
+  "additional_amendment_seconds_reported": 60,
+  "additional_amendment_source": "author requested these latest journal changes and reported 60 seconds; no separate start/end timestamps or per-function split provided",
+  "total_review_workflow_seconds": 1348,
+  "total_review_workflow_minutes": 22.466666666666665,
+  "total_review_workflow_formula": "1288 wall seconds + 60 additional author-reported amendment seconds; equivalently 169 review + 204 rewrite + 915 table-entry overhead + 60 amendment; no double-counting",
+  "latest_review_verdicts": {
+    "accepted": ["HR-G08", "HR-G09", "HR-G10"],
+    "rejected": ["HR-G01", "HR-G02", "HR-G03", "HR-G04", "HR-G05", "HR-G06", "HR-G07"]
+  },
+  "rewritten_function_ids": ["HR-G01", "HR-G07", "HR-G08"],
+  "rewrite_scope_after_amendment": "2 rejected functions and supplementary strengthening of 1 accepted function; original code and 204-second cost preserved",
+  "initial_review_snapshot_commit": "9b3e6a987f122d439265520f9a900d8245badf30",
   "per_function_source": "values entered by author in review-log.md; null rewrite means author marked не робив, not missing measured duration",
   "prior_20_review_3_rewrite_minutes_used_for_this_phase": false
 }
