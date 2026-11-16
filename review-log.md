@@ -1,21 +1,45 @@
-# Generation Review Log — усі функції першої генерації
+# Generation Review Log — новий авторський повтор ДЗ10
 
-Оцінювання асистентом за frozen `prompts/review-criteria.md` (`6c58594`), не самостійне людське рев'ю. Порядок та G-ID — з raw `reports/openai-generation/extracted.py` (`e7c77a6`). Параметризована функція — один рядок. `minutes` нижче **не заміряні**; загальні 45 хв є тільки плановим припущенням. Не розподіляємо вигадані хвилини по функціях.
+Усі10функцій поточного raw. Джерело уточнень: [авторський журнал](experiments/human-repeat/review-log.md); minutes і суми — [Impact Report](ai-adoption-impact-report.md). Історичний журнал11функцій збережено у24d88b3:review-log.md; два outputs не змішуємо.
 
-| ID / функція | verdict | criterion / reason | action | minutes (review + rewrite) |
-| --- | --- | --- | --- | --- |
-| G-01 `test_mid_rate_known_currencies` | rejected | Оракул: expected читає ті самі policy.RATES_TO_EUR, що й модуль; неправильний тариф змінить обидві сторони. | Залишено green as-is у comparator; rewrite не потрібен, baseline уже має буквальний cross-rate. | не заміряно + — |
-| G-02 `test_mid_rate_unknown_currency` | accepted | Exception, oracle N/A; перевіряє невідому вихідну й цільову валюту. Новий клас помилок щодо baseline. | Прийнято як є. | не заміряно + — |
-| G-03 `test_quote_valid_tiers_no_spread` | accepted | Нульовий спред і allowance=True — конкретні перевірки; новий USD→EUR вхід і поля валют/тіру. Не заявляє boundary. Input адаптивний до policy, тому це не доказ тарифів/точного ліміту або курсу. | Прийнято як є, лише в цьому вузькому scope. 3 параметри — одна функція. | не заміряно + — |
-| G-04 `test_quote_invalid_tier` | rejected | Новизна: повторює baseline unknown tier з іншим рядком. Сам exception коректний. | Залишено green as-is, не зараховано як нова користь. | не заміряно + — |
-| G-05 `test_quote_spread_applied_when_over_allowance` | rejected | Оракул: q.spread_pct порівнюється з policy.FX_SPREAD_PCT; сума лише >0, final<gross, без незалежного числа. | Green as-is, baseline уже містить конкретні тарифи/суми. | не заміряно + — |
-| G-06 `test_quote_spread_pct_override` | rejected | Оракул/хибна передумова: amount=469.2 USD =431.664 EUR <500; правильний spread=0, не 5.5. Двічі відтворений original-red, initial JUnit. | Тільки цю функцію видалено окремим комітом; R-01 у rewritten перевіряє override і легітимний безкоштовний контроль. | не заміряно + не заміряно |
-| G-07 `test_quote_partial_allowance_true` | rejected | Рівень assertion: лише 0<fee<повний fee, без конкретної суми; неправильне часткове нарахування всередині діапазону пройде. Це не boundary-тест за ім'ям. | Green as-is; R-02 з буквальними сумами partial allowance. | не заміряно + не заміряно |
-| G-08 `test_quote_partial_allowance_false` | rejected | **Оракул N/A: властивість. Новизна:** повний спред без partial allowance вже перевірено буквальним baseline. Тут 1000 USD =920 EUR понад allowance500 навіть без previous usage501, тому нову межу не ізольовано; нових полів немає. Властивість коректна, але не додає нового правила. | Green as-is; причину виправлено після читання PDF, без зміни frozen критеріїв чи коду. | не заміряно + — |
-| G-09 `test_fxquote_as_dict_rounds_floats` | rejected | Рівень assertion: round(v,6)==v також істинно після округлення до 2 знаків; цикл не перевіряє наявність ключів. Новизна є, достатнього еталону немає. | Green as-is; R-03 перевіряє повний словник і точні 6 знаків. | не заміряно + не заміряно |
-| G-10 `test_transfer_fee_valid_types` | rejected | Оракул: очікувана комісія обчислюється з policy.TRANSFER_FEES, яка є джерелом самої функції. | Green as-is; виходить за основний quote scope, до тарифного захисту не зараховано. | не заміряно + — |
-| G-11 `test_transfer_fee_invalid_type` | accepted | Exception, oracle N/A; новий клас невідомого типу переказу, незалежний від часу/порядку. | Прийнято як є. | не заміряно + — |
 
-Підсумок: 11 функцій / 13 initial collected cases; accepted 3/11, rejected 8/11 (72.73%), rewritten 3/8. Найчастіше відхилення — oracle, 4 функції (G-01/05/06/10); assertion level 2 (G-07/09), novelty 2 (G-04/08). Після видалення G-06 comparator має 10 функцій / 12 cases. Зелені відхилені тести не видалені й не покращені: mutation score описує raw green набір, не лише accepted subset. Переписані асистентом (не «вручну автором») R-01..03 не входять у три основні порівняння.
+Стан: **авторське рев'ю завершено й уточнено автором**. Початкові verdicts і виміри збережені в commit `9b3e6a987f122d439265520f9a900d8245badf30`; нижче — остання авторська класифікація. Не використовувати verdicts історичної генерації чи AI-proxy: новий output і новий baseline відрізняються.
 
-Виправлення ДЗ10: G-08 — property, Oracle N/A; причина rejection уточнена до novelty. Старий розподіл 5/2/1 збережений в історичному commit b8694f1, verdict і frozen критерії не змінені. Автор пізніше повідомив 20 хв на review та 3 хв на одну правку; окремих хвилин для кожної функції немає, тому їх не розподіляємо штучно.
+Генерація: `c161d3cb31dc3f013e16224beb6d5759f601e191`, [незмінний raw код](experiments/human-repeat/generation/extracted.py),10functions/10cases, original10PASS. Порівняння новизни — з [твоїм baseline](experiments/human-repeat/baseline.py),8functions/15cases, і раніше прийнятими HR-G у порядку нижче. Критерії зафіксовано до генерації у [prompts/review-criteria.md](prompts/review-criteria.md).
+
+## Як вести журнал
+
+1. Після відкриття raw коду й цього файла напиши в чаті **«починаю рев'ю»** / **«начинаю ревью»** — зафіксуємо загальний старт. До цього таймер не запускається.
+2. Для кожної функції окремо засікай секундоміром review, запиши фактичні **секунди** у відповідну колонку. Вони потім переводяться у хвилини діленням на60; не ділимо загальний час порівну.
+3. Обери accepted/rejected, назви criterion, поясни причину своїми словами, напиши action: as-is / remove original-red / окремий rewrite. Для exceptions/properties Oracle N/A; boundary застосовується лише коли функція заявляє межу. Сам факт green не є verdict.
+4. Не змінюй baseline або raw generated файл. Якщо вирішиш переписати функцію, спершу збережи її verdict і окремо засічи rewrite; новий код поклади у `experiments/human-repeat/rewritten.py`, не в raw. Якщо rewrite не робився — познач «не робив»; незаміряне не називай нулем.
+5. Збережи журнал (`Ctrl+S`) і напиши **«ревью готово»**. Перерви повідомляй окремо з тривалістю. Загальний wall time й сума per-function часу — різні величини, їх не підганяємо.
+
+| ID | Функція | Verdict | Criterion | Причина | Action | Review, секунд | Rewrite, секунд |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| HR-G01 | test_mid_rate_known_currencies | rejected | Oracle | Очікуваний курс обчислюється за тією самою формулою, що й production-код. Незалежний oracle відсутній. | окремий rewrite — виконано | 23 | 60 |
+| HR-G02 | test_mid_rate_unknown_currency_raises | rejected | Novelty / Exceptions (Oracle N/A) | Baseline вже перевіряє невідомі валюти. Прямий виклик публічної mid_rate() корисний як окрема модульна перевірка, але не додає нового класу вхідних даних. | as-is (rejected, без rewrite) | 9 | не робив |
+| HR-G03 | test_quote_unknown_tier_raises | rejected | Novelty / Exceptions (Oracle N/A) | Baseline вже перевіряє невідомий тариф, ValueError і повідомлення; нового класу входу або поля немає. | as-is (rejected, без rewrite) | 16 | не робив |
+| HR-G04 | test_quote_within_allowance_no_spread | rejected | Novelty / Boundary | Baseline вже перевіряє точну межу безкоштовного ліміту й числовий результат; нового сценарію або сильніших assertions немає. | as-is (rejected, без rewrite) | 17 | не робив |
+| HR-G05 | test_quote_exceed_allowance_default_spread | rejected | Novelty / Oracle | Baseline вже перевіряє перевищення ліміту, стандартні спреди всіх трьох тарифів і розрахунок комісії. Очікування залежать від policy та q.spread_pct, незалежного числового oracle або нового покриття немає. | as-is (rejected, без rewrite) | 12 | не робив |
+| HR-G06 | test_quote_exceed_allowance_spread_override | rejected | Novelty / Arithmetic | Baseline вже перевіряє override поза безкоштовним лімітом; інше значення відсотка не додає нового класу входу чи поля. | as-is (rejected, без rewrite) | 10 | не робив |
+| HR-G07 | test_quote_partial_allowance_applied | rejected | Novelty / Assertion strength (Oracle N/A) | Baseline вже перевіряє часткове застосування безкоштовного ліміту з конкретними числовими результатами. Згенерований тест повторює алгоритм розрахунку та перевіряє лише spread_amount, не додаючи нового сценарію чи сильніших assertions. | окремий rewrite — виконано | 25 | 81 |
+| HR-G08 | test_quote_as_dict_rounds_floats | accepted | Property / Assertion strength (Oracle N/A) | Перевіряє нову відносно baseline властивість округлення всіх float у as_dict() до не більш ніж шести знаків. Не перевіряє повноту структури або правильність значень; зокрема, округлення до двох знаків також задовольняє цю властивість. | as-is; раніше виконаний окремий rewrite збережено як додаткове посилення accepted тесту | 32 | 63 |
+| HR-G09 | test_transfer_fee_known_types | rejected | Oracle; корисне Coverage окремо | Додає нове покриття transfer_fee() для чотирьох типів переказів: формула, округлення та п'ять полів. Однак числові очікування беруться з тієї самої policy, що й реалізація; за зафіксованим критерієм Oracle це rejected. Корисне додаткове покриття не скасовує відсутності незалежного еталону. | as-is (rejected, без rewrite) | 15 | не робив |
+| HR-G10 | test_transfer_fee_unknown_type_raises | accepted | Exceptions (Oracle N/A) | Перевірено тип винятку ValueError і повідомлення для невідомого типу переказу. | as-is | 10 | не робив |
+
+## Підсумок і зміни класифікації
+
+Останні авторські уточнення: **accepted 2 з 10** — HR-G08, HR-G10; **rejected 8 з 10 (80%)** — HR-G01, HR-G02, HR-G03, HR-G04, HR-G05, HR-G06, HR-G07, HR-G09. Це замінює початкові 7 accepted / 3 rejected і проміжні класифікації. Автор окремо підтвердив HR-G09 rejected за вихідним Oracle після виявлення суперечності з frozen критеріями; корисне покриття відзначене окремо, критерії не змінювалися. Проміжні 3/7 збережено в24d88b3. Verdict не змінює raw comparator: усі 10 оригінальних green-функцій залишаються незмінними, навіть якщо відхилені на review.
+
+Окремі rewrites фактично вже виконані для HR-G01, HR-G07, HR-G08: 3 функції / 6 cases. Після перекласифікації це **2 rejected-функції й посилення 1 accepted-функції**, а не 3 виправлені rejected. Останній опис HR-G08 «as-is / не робив» не скасовує збереженого коду й початкових 63 секунд rewrite. Початкові per-function секунди в таблиці збережено; нове уточнення не було окремо заміряне для кожної функції.
+
+Залежність очікувань від policy сама по собі не робить тест безкорисним, але суперечить числовому Oracle цього експерименту. Новизна HR-G09 не змінює його rejected. Accepted HR-G08 має описані вище обмеження; не трактуємо його як повний захист грошового контракту.
+
+## Час і походження записів
+
+Загальний таймер review: 16.11.2026, 23:14:35–23:36:03 Europe/Warsaw, **1288 с = 21:28**. Початкові авторські записи: review **169 с**, rewrite **204 с**, разом **373 с = 6:13**. Залишок **915 с = 15:15** автор пояснив заповненням незручної Markdown-таблиці: це витрати процесу, не перерва; розподіл є поясненням залишку, а не окремим секундомірним виміром.
+
+До уточнення класифікації автор додатково повідомив **60 с** без окремих старту/фінішу чи розподілу по функціях. Відомі витрати цього review-workflow: **1288 + 60 = 1348 с = 22:28**, або **169 + 204 + 915 + 60 = 1348 с**. Не додаємо per-function секунди вдруге до загального таймера. Пізніша відповідь щодо HR-G09 окремо не хронометрувалася: її тривалість не вигадуємо і не називаємо нульовою. Джерело й межі вимірювання — [review-timing.json](experiments/human-repeat/review-timing.json). Економію за однакової якості не заявляємо.
+
+Порожню форму підготував асистент; початкові verdicts, rewrites і секунди надав автор. Поточну таблицю асистент відформатував за останніми відповідями автора, зберігши первинні дані в історії.

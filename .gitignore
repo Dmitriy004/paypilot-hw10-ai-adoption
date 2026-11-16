@@ -5,3 +5,4 @@ __pycache__/
 .coverage
 htmlcov/
 .env
+reports/human-repeat/*.xml

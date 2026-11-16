@@ -1,17 +1,20 @@
 # ДЗ10: вимірювання ефекту асистента
 
-**Поточний етап16.11:** [новий авторський повтор](experiments/human-repeat/README.md) — baseline8functions/15PASS із реальним wall timer26хв11с, потім окремий forecast і перша нова OpenAI генерація10functions/10PASS. Потрібне твоє timed review; нові mutation scores/ROI ще не отримані. Історичні результати нижче не підміняються новим baseline.
+Новий авторський повтор16.11.2026: **baseline10/12,generated2/12,union10/12**. Додаткових kills немає, хоча generated виконав45/45рядків проти39/45baseline. Це вибрані штучні дефекти одного модуля, не production-статистика.
 
-Поточний пакет продовжує історію L11 без squash. Головний результат: baseline 9/12, generated 3/12, union 9/12; додаткове виявлення від generated — 0/12. Це вимір на фіксованих штучних змінах, не частота production-збоїв.
+Автор написав8функцій/15cases за26:11wall; нова перша OpenAI відповідь має10функцій/10cases. Остаточно accepted2/10(HR-G08/10),rejected8/10(80%). Відомий review/rewrite/table/amendment subtotal22:28; пізніша координація не заміряна. Машина15.3283431с,$0.002142usage estimate,billing не звірено. Full suite45PASS.
 
-- [Impact Report](ai-adoption-impact-report.md), [review усіх початкових функцій](review-log.md), [узагальнений шаблон](ai-adoption-impact-report.generic.md).
-- [Готовність до здачі та відкриті критерії](submission-readiness.md).
-- [Відтворення поточної версії](chain-ready.md).
-- [Окремий пізніший timed AI-proxy експеримент](experiments/ai-proxy/README.md); не входить у основне порівняння.
+- [Impact Report](ai-adoption-impact-report.md), [журнал усіх10функцій](review-log.md), [сводка виміру](reports/human-repeat/measurement-summary.json).
+- [Статус рубрики](submission-readiness.md), [чистий clone](chain-ready.md), [узагальнений шаблон](ai-adoption-impact-report.generic.md).
+- [Первинні джерела нового повтору](experiments/human-repeat/README.md).
 
-Для offline-перевірки API-ключі та запущений стенд не потрібні. PowerShell:
+**Повну відповідність рубриці не заявлено.** Baseline source a05b304 передує новому raw c161d3c, проте canonical tests/manual/generated перенесені разом пізніше55f6795; автор уже знав історичний дослід. Потрібне рішення ментора про допустимість повтору й альтернативного доказу source-freeze, не підгонка історії. Новий clean clone ще перевіряється; публічного origin/відправки немає.
 
-```powershell
+Стандартні набори тепер відповідають новому повтору. Старий root report/envelope доступний у24d88b3; reports/openai-generation/,старі coverage-*.json і mutants-*-20261113-* — **історичні**. Нові coverage/audit/summary — reports/human-repeat/; нові primary reports — mutants-*-20261116-225513Z.json. Rewritten/infrastructure/proxy поза comparators.
+
+Offline-перевірка не потребує ключів або стенду:
+
+~~~powershell
 python -m venv .venv
 .venv/Scripts/python.exe -m pip install -r requirements.txt
 .venv/Scripts/python.exe -m pytest tests/manual
@@ -19,15 +22,13 @@ python -m venv .venv
 .venv/Scripts/python.exe tools/run_mutants.py --set all
 .venv/Scripts/python.exe tools/generation_summary.py reports/generation.json
 .venv/Scripts/python.exe -m pytest
-```
+~~~
 
-`reports/generation.json` містить історичну першу OpenAI-відповідь, а не нову генерацію чи Claude-дані. Машинні 18.2989167 с і $0.0025708 — один call та оцінка за usage, не звірка billing. Primary reports, `LAB-STATUS.md`, `verification.md` і `reports/clean-clone.json` описують попередню L11; нова перевірка описується окремо в `chain-ready.md`.
-
-Повний suite містить 37 cases. Infrastructure, rewritten і пізніший AI-proxy не входять до наборів manual/generated/all. Автор повідомив 60 хв writing, 20 хв review і 3 хв на одну правку; немає підтверджених start/end чи повного часу всіх правок. Human-only baseline до генерації не підтверджений. Технічний пакет не позначений формально завершеним або надісланим.
+generation_summary читає записану відповідь, не викликає API. Дозволена одна нова платна спроба використана; retries/strong-prompt calls не робимо.
 
 ## Збережена початкова інструкція кіта L11
 
-Нижче — upstream-довідка, а не інструкція повторно генерувати тести для цього ДЗ. Frozen app, baseline, generated, prompts і список мутантів у цьому пакеті не змінюються.
+Нижче — upstream-довідка, а не інструкція повторно генерувати тести для цього ДЗ. App, prompts і список мутантів незмінні; canonical suites тепер відповідають новому повтору, описаному вище.
 
 ### Кіт лабораторної L11: два набори тестів на одному модулі
 

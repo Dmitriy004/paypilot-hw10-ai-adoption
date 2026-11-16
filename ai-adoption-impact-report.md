@@ -1,194 +1,203 @@
 # AI Adoption Impact Report — ДЗ10: вимірювання ефекту асистента
 
-**Оновлено 16.11.2026 · прогони 13.11.2026 · Дмитро Сугак · PayPilot FX · Ship it.** Результати прогонів власні, але baseline і review підготовлені з AI; це не експеримент самостійної роботи людини. Автор повідомив 60 хв writing, 20 хв review і 3 хв на одну правку; start/end і per-function minutes не надані. Це self-reported тривалості, не підтвердження human-only baseline до генерації. Відкриті критерії позначені нижче; пакет не видається за формально завершене ДЗ.
+**Дмитро Сугак · PayPilot FX · мандат Ship it.** Прогони нового повтору: 16.11.2026; підсумок: 17.11.2026. Головне: ручний baseline **10/12**, перша нова генерація **2/12**, об'єднання **10/12**. Додатково до baseline генерація не виявила жодної з цих помилок.
 
-Повністю прочитані надані PDF лабораторної (18 сторінок) і ДЗ (7 сторінок), включно з рубрикою. Лабораторна історія `b8694f1b810bdfdd0ec5c51f6ae3d8a6ad4b2181` збережена без squash; старі репозиторії не змінені. [Submission readiness](submission-readiness.md) відділяє PASS, PARTIAL і BLOCKED. OpenAI замість Claude — явна зміна приладу; це не Claude-референс і не запасний артефакт ментора.
+Це **новий повтор**, не підміна досліду 13.11. Автор написав новий baseline і провів review; автоматизація виконала ізольовану генерацію, прогони та оформлення. Автор уже бачив історичний дослід, тому це не сліпий контроль. Результати власні, не запасні. OpenAI замість Claude — явна зміна інструмента.
+
+**Межа відповідності:** вихідні baseline і raw generation збережені послідовно в окремих commits до їхніх запусків. Проте стандартні каталоги перенесено разом пізнішим commit55f6795: буквальну перевірку рубрики «commit tests/manual раніше tests/generated і manual не змінено після жодної генерації» ця історія не проходить. Не приховуємо відступ; потрібне рішення ментора про прийнятність нового повтору. Докладно — [готовність](submission-readiness.md).
 
 ## Прогноз перед роботою
 
-Початковий `forecast.md` закомічено `72fafac` до baseline; конкретні ID — `forecast-final-ids.md`, окремий `b305baa` до генерації/прогонів. Не переписували після результатів.
+Прогноз [experiments/human-repeat/forecast.md](experiments/human-repeat/forecast.md), окремий commit **16d6611e5da780c37a0501b5570be3912f72bd4c** о22:50:50 Europe/Warsaw, до нового request о22:51:14 і mutation runs. Сам прогноз після фактів не редагувався.
 
-| Що | Початковий прогноз | Уточнення на фінальному списку до запуску | Факт |
+| Набір | Прогноз | Факт | Розбіжність |
 | --- | --- | --- | --- |
-| Baseline | 8/12 | 9/12: A-01..03,B-01..03,C-01..03 | 9/12, ці самі ID |
-| OpenAI | 7/12 | B-03,C-01..03,D-01..03 | 3/12: B-03,C-02,C-03 |
-| Union | — | 12/12 | 9/12 |
-| Слабкий клас baseline / generated | форма / значення тіру | без зміни | форма / значення тіру та форма |
+| Baseline | 10/12: A-01..03, B-01..03, C-01..03, D-03 | 10/12, ті самі ID | немає |
+| Generated | 3/12: B-03,C-02,C-03 | 2/12: **B-01,C-02** | B-03/C-03 не вбиті; B-01 не прогнозувався |
+| Union | 10/12, як baseline | 10/12, ті самі ID | немає |
 
-Найбільша розбіжність — переоцінка OpenAI на4мутанти: C-01 та D-01..03 не вбиті. Baseline уточнено8→9 після підготовки остаточних тестів, але до прогонів; первинний прогноз збережено. Додаткових kills поза конкретним прогнозом немає. Відсутність класу, де generated сильніший, дозволена умовами лабораторної; результат не підганяли під приклад8/8/10.
+Найбільша помилка прогнозу — перенесення очікувань від історичного output на ще не отриману нову відповідь. HR-G04 реально ставить used490+amount10 рівно на ліміт500 і ловить B-01. Але при B-03 ігнорування used не змінює його безкоштовний результат: amount10 і без used нижче ліміту; інші входи теж не ізолюють перетин. C-03 переживає набір: там, де комісія ненульова, немає незалежного assertion для final_amount; у free-входах зміна знака нульової комісії непомітна. C-02 ловиться перевіркою spread_amount у HR-G05. Assertion output — [audit](reports/human-repeat/mutant-audit.json). Найслабші класи: baseline — серіалізація; generated — тарифи й форма.
 
-## 1. Baseline
+## 1. Ручний baseline
 
 | Поле | Значення |
 | --- | --- |
-| Файл / functions / collected cases | tests/manual/test_fx_manual.py;7/9 |
-| Авторство | AI-assisted, не самостійний людський baseline |
-| Таймер: старт / фініш | не надано / не надано; commit tolerance перевірити неможливо |
-| Час writing, повідомлений автором | 60 хв у чаті; зв'язок із цим frozen baseline незалежно не підтверджений |
-| Еталони | Буквальні числа з policy.py, без policy imports у тестах: спреди1.5/0.9/0.5%, лімітиEUR500/1000/5000; суми розраховані незалежно |
-| Freeze | функції03c206c; уточнення лише docstring6c58594, до генерації; після генерації не змінювали |
-| Original | 9/9 PASS, reports/manual-original.xml |
+| Каталог | tests/manual/test_fx_manual.py |
+| Функції / collected cases | **8 / 15**, parametrized function рахується один раз |
+| Авторство | Автор ввів код у IDE; асистент підготував порожній файл і перевірив запуск, не змінюючи реалізацію |
+| Таймер | **16.11.2026,22:16:32–22:42:43 Europe/Warsaw (UTC+01)** |
+| Час | **1571с =26хв11с =26.183333хв**, без перерв за підтвердженням автора |
+| Межа виміру | Wall time з handoff/message latency, не active-only телеметрія |
+| Джерело еталонів | Буквальні актуальні вимоги з policy.py; у тестах немає policy imports або обчислення expected через функцію під тестом |
+| Freeze перед новою генерацією | **a05b3044278886b8398c7463e94396a85f62a309** о22:43:40, через57с після фінішу |
+| Джерело / hash | [baseline.py](experiments/human-repeat/baseline.py), SHA256 8f1999ea58e3c515d7fd82a14ec5362dea76c307cdebfc5615155b03d437c7da |
+| Promotion | 55f6795b0dcc617058d4059947d83cc25d807e20; зміст збігається зі збереженим baseline після нормалізації EOL |
+| Original | **15/15 PASS**; [coverage](reports/human-repeat/coverage-manual.json) |
 
 | ID | Функція | Правило / клас |
 | --- | --- | --- |
-| M-01 | test_tier_spread_above_allowance | три тіри, конкретний spread/final; значення тіру, арифметика |
-| M-02 | test_tier2_exact_1000_eur_is_free | рівноEUR1000 безкоштовні; межа |
-| M-03 | test_tier2_crossing_remaining_allowance_charges_whole_quote | повна сума платна при перетині залишку; межа/арифметика |
-| M-04 | test_tier2_previous_usage_counts_toward_allowance | usage входить до ліміту; межа |
-| M-05 | test_explicit_spread_override_above_allowance | конкретний override; арифметика |
-| M-06 | test_gbp_to_usd_uses_literal_cross_rate | cross-rate і сума за буквальним курсом; арифметика |
-| M-07 | test_unknown_tier_is_rejected | негативна валідація, поза списком12мутантів |
+| HR-M01 | test_tier1_allowance_exact_boundary_and_one_cent_over | EUR500 і500.01, буквальна кінцева сума; межа/арифметика |
+| HR-M02 | test_allowance_used_before_is_included_in_limit_check | used400+100/100.01; поле попереднього usage; межа/форма |
+| HR-M03 | test_tier_specific_spread_when_free_limit_exceeded | Три тарифи, allowance500/1000/5000, spread1.5/.9/.5%, суми; значення тіру |
+| HR-M04 | test_cross_currency_conversion_uses_both_eur_rates | GBP→PLN, буквальні1.17/.23; арифметика |
+| HR-M05 | test_partial_allowance_charges_only_exceeding_portion | EUR200,used400: fee1.5,final198.5; арифметика |
+| HR-M06 | test_partial_allowance_after_limit_exhausted_charges_full_amount | EUR200,used500: fee3,final197; арифметика |
+| HR-M07 | test_spread_override_applies_only_outside_free_allowance | override2%, free100/paid600; арифметика/контроль |
+| HR-M08 | test_unknown_tier_or_currency_raises_value_error | Невідомий тариф/from/to, точний ValueError; негативна валідація |
 
-Точну межу й previous usage включено свідомо після ознайомлення з темою. Ліміт у тарифах не виводили з результату функції. Вимога human timer відсутня не через нерозбірливий PDF, а через фактичне походження цього baseline; її не можна відновити добором timestamp до коміту.
+Межі, тарифні очікування та partial allowance враховано свідомо після ознайомлення з темою. Виявлення B-01 через EUR500 не є доказом окремого входу рівноEUR1000. B-02 ловиться полем allowance_total_eur==1000 у HR-M03. Перший збережений human baseline лежить не у стандартному каталозі; недолік порядку canonical paths не маскуємо датами.
 
 ## 2. Незмінний список мутантів
 
-`mutants.toml`, commit `6c585940c7527c45637e95aea649734360baedcd`,13.11.2026 17:36:40+01:00; перший run13.11 16:43:43UTC, пізніше freeze. У всіх3первинних звітах uncommitted=false,12мутантів/4класи по3. SHA256 `04dc871bd9947a22a5dc252f0d97f070abcb960effa5f053f3a5b8a5f0a947e6`.
+Файл mutants.toml, commit **6c585940c7527c45637e95aea649734360baedcd**,13.11.2026 17:36:40+01, до обох генерацій і первинних/нових прогонів. SHA256 **04dc871bd9947a22a5dc252f0d97f070abcb960effa5f053f3a5b8a5f0a947e6**. Не змінювався. У трьох нових reports uncommitted=false, HEAD55f6795,12мутантів по3в кожному класі.
 
 | ID | Клас | Оригінал → мутант | Місце |
 | --- | --- | --- | --- |
 | A-01 | значення тіру | tier2 .9→1.5 | policy.py, FX_SPREAD_PCT |
 | A-02 | значення тіру | tier1 1.5→.9 | policy.py, FX_SPREAD_PCT |
 | A-03 | значення тіру | tier3 .5→.9 | policy.py, FX_SPREAD_PCT |
-| B-01 | межа EUR 1 000 | <=→< (усі тіри) | fx.py, within |
+| B-01 | межа EUR 1 000 | <=→< для всіх tier | fx.py, within |
 | B-02 | межа EUR 1 000 | tier2 1000→999 | policy.py, allowance |
 | B-03 | межа EUR 1 000 | used+amount→amount | fx.py, within |
 | C-01 | арифметика | amount*rate→amount/rate | fx.py, gross |
-| C-02 | арифметика | /100→/10 | fx.py, spread_amount (звичайна гілка) |
+| C-02 | арифметика | /100→/10 у звичайній гілці | fx.py, spread_amount |
 | C-03 | арифметика | gross-spread→gross+spread | fx.py, final_amount |
 | D-01 | форма результату | round6→round2 | fx.py, as_dict |
-| D-02 | форма результату | видалено final_amount | fx.py, as_dict |
+| D-02 | форма результату | вилучено final_amount | fx.py, as_dict |
 | D-03 | форма результату | previous usage→0 | fx.py, результат quote |
 
-Кожна зміна застосовується рівно один раз; сам модуль не редагується, лише тимчасові копії runner. Вцілілі D не є еквівалентними: окремі rewritten дають assertion witness для всіх3. Повний `reports/mutant-audit.json` підтверджує всі36 outcomes; kills — assertions, не import/syntax errors.
+Runner змінює тільки тимчасові копії. [Аудит](reports/human-repeat/mutant-audit.json) повторив **36/36** outcome трьох наборів: усі kills — AssertionError, не import/syntax failure. Окремі rewritten witnesses вбили **3/3 D-мутанти**, отже вцілілі D-01/02 не еквівалентні. Witnesses не входять до comparators.
 
-## 3. Критерії і промпт до генерації
+## 3. Критерії рев'ю і промпт до генерації
 
-`prompts/`, freeze6c58594 до e7c77a6: незалежний oracle; конкретність assertions; справжня заявлена межа; незалежність від часу/порядку; ім'я правила; новизна щодо baseline й accepted G. Для exceptions/properties Oracle N/A, їх оцінюють за assertion/novelty. Критерії після генерації не змінювались.
+[Критерії](prompts/review-criteria.md) і [prompt](prompts/generation-prompt.md) frozen6c58594 до нового request: незалежний числовий oracle, сила assertions, справжня заявлена межа, незалежність від часу/порядку, ім'я правила, новизна щодо baseline/раніше прийнятих функцій. Для exceptions/properties Oracle N/A. Критерії не змінені заднім числом; HR-G09 зрештою відхилено саме за вихідним Oracle.
 
 ```text
 Згенеруй unit-тести для модуля app/engines/fx.py. Поклади їх у tests/generated/test_fx_generated.py.
 ```
 
-Payload: лише цей дослівний текст і повний публічний fx.py, без tools/history/policy/manual/mutants/критеріїв. `.claude/settings.json` не змінено, але для OpenAI він не enforcement: обмеження задає явний payload. Імпорти policy у generated читають таблиці лише під час локальних тестів, не означають наявності таблиць у контексті моделі.
+Модель отримала **лише дослівний prompt і public fx.py** — без policy.py, baseline, mutants, критеріїв, README, історії, tools. Імпорт policy у output читає таблиці під час локальних тестів; це не передача таблиць у request. Для OpenAI обмеження задавав payload, не .claude/settings.json.
 
 ## 4. Генерація і покриття
 
 | Поле | Факт |
 | --- | --- |
-| Провайдер / точна модель | OpenAI / gpt-4.1-mini-2025-04-14 |
-| Параметри | temp.7, max_output8000, storefalse, service default;1фактичний call,0retries |
-| Request | req_21167f0032c2449d9630a473ebb44fae;13.11.2026 |
-| Час машини | 18.2989167с =0.304981945хв, один вимір |
-| Usage / ціна | input795 (cached0)+output1408=2203; $0.0025708 usage estimate, **billing не звірено** |
-| Формула | (795×.40+1408×1.60)/1M; standard тариф перевірений13.11 в official docs |
-| Вивід | reports/openai-generation/{request,response,metadata}.json та extracted.py, e7c77a6 |
-| Формат ДЗ | reports/generation.json — envelope історичної OpenAI генерації, не новий call і не удаваний Claude JSON |
-| Summary | python tools/generation_summary.py reports/generation.json; точна ціна не округлюється до нуля |
-| Initial / retained | 11functions/13cases:12PASS+1FAIL; після видалення тількиG-06 окремим df6a596 —10functions/12PASS |
+| Модель | **OpenAI gpt-4.1-mini-2025-04-14**, temp.7,max_output8000,storefalse,service default |
+| Перша спроба нового повтору | 16.11.2026,21:51:14.225517–21:51:29.605050UTC; **1call,0retries** |
+| Request | **req_aeefce9c3bea4ffe84edd674488cf81a** |
+| Час машини | **15.3283431с =0.255472385хв**, один вимір |
+| Usage |795input(cached0)+1140output=1935tokens |
+| USD | **$0.002142 usage estimate**, не звірено з billing |
+| Формула / тариф | (795×.40+1140×1.60)/1M; standard rates USD/1M input/output, cached .10; official docs перевірено16.11 |
+| Budget | Дозвіл≤$0.05, внутрішній guard≤$0.03; conservative upper estimate$0.0140412 |
+| Raw | [request/response/metadata/extracted](experiments/human-repeat/generation/), commit **c161d3cb31dc3f013e16224beb6d5759f601e191** до першого запуску |
+| Root envelope | reports/generation.json — упакована та сама записана відповідь; новий call не виконує |
+| Initial / retained | **10functions/10cases:10PASS; retained10/10**, видалено0, код не виправлявся |
 
-Ціна не включає підготовку baseline/review, роботу асистента-координатора, комп'ютер та інфраструктуру. Source pricing: https://developers.openai.com/api/docs/pricing . Повторної генерації заради кращого score не було.
+[Офіційний тариф](https://developers.openai.com/api/docs/pricing), [snapshot](https://developers.openai.com/api/docs/models/gpt-4.1-mini). Ціна тільки цього нового request; попередній дослід мав окремий call і не прихований. Billing/інфраструктура/робота асистента-координатора не виміряні та не оголошені нульовими.
 
-G-06 використовував469.2USD=431.664EUR<500, тож spread0 правильний, а expected5.5 хибний. Raw і initial JUnit збережено перед видаленням; інші generated функції не виправляли.
-
-| Набір | Команда | fx.py coverage |
+| Набір | Команда | Покриття fx.py |
 | --- | --- | --- |
-| Baseline | pytest tests/manual --cov=app.engines.fx | 34/45=75.56% (console76%); reports/coverage-manual.json |
-| Generated | pytest tests/generated --cov=app.engines.fx | 45/45=100%; reports/coverage-generated.json |
+| Baseline | pytest tests/manual --cov=app.engines.fx | **39/45=86.67%**, console87%; reports/human-repeat/coverage-manual.json |
+| Generated | pytest tests/generated --cov=app.engines.fx | **45/45=100%**; reports/human-repeat/coverage-generated.json |
 
-Той самий Python3.12.14/pytest9.2.0/pytest-cov7.1.0; не порівнюємо з64% прикладу на іншій Python. Line coverage не є branch coverage або правильністю тарифів.
+Python3.12.14/pytest9.2.0/pytest-cov7.1.0/coverage7.17.3 однакові. Це line coverage, не branch coverage і не доказ правильних сум; приклад64% з курсу на іншій Python не наш вимір.
 
 ## 5. Generation Review Log
 
-Журнал усіх початкових11функцій; parametrized рахується один раз. Докладні reasons — [review-log.md](review-log.md). Review/rewrite виконано з асистентом. Автор повідомив 20 хв на review і 3 хв на одну правку; немає розподілу на функції чи часу всіх трьох rewritten. [Окремий пізніший timed AI-proxy](experiments/ai-proxy/README.md) не замінює historical baseline чи людські minutes.
+Усі **10функцій**, порядок AST raw; verdicts надав автор. Остаточний журнал — [review-log.md](review-log.md); джерело уточнень — [human journal](experiments/human-repeat/review-log.md). Хвилини нижче дорівнюють секундам/60; таблицю не заповнювали рівними частками загального часу.
 
-| ID / функція | Verdict | Criterion / reason | Action | Review + rewrite minutes |
-| --- | --- | --- | --- | --- |
-| G-01 mid_rate_known | rejected | Oracle: та сама policy таблиця по обидва боки | green as-is; baseline має буквальний cross-rate | невідомо + — |
-| G-02 mid_rate_unknown | accepted | Oracle N/A; нові класи невідомих from/to currencies | as-is | невідомо + — |
-| G-03 valid_tiers_no_spread | accepted | конкретний0/True; нові USD→EUR/метадані; не boundary і не тарифний еталон | as-is у вузькому scope; адаптивний input не є доказом ліміту/курсу | невідомо + — |
-| G-04 invalid_tier | rejected | Novelty: той самий unknown-tier клас baseline | green as-is | невідомо + — |
-| G-05 spread_over_allowance | rejected | Oracle policy; лише знак/порядок сум | green as-is | невідомо + — |
-| G-06 spread_override | rejected | хибне expected для вхідної суми всередині free allowance; original-red | видалено окремим commit; R-01 з правильним input і free control | невідомо + невідомо |
-| G-07 partial_true | rejected | Oracle N/A; діапазон не підтверджує заявлену точність часткової суми | green as-is; R-02 з конкретними .9/299.1 | невідомо + невідомо |
-| G-08 partial_false | rejected | **Oracle N/A; Novelty:** та сама повна комісія baseline; amount920EUR уже>500 без usage, нову межу не ізольовано | green as-is; причина виправлена при звірці з PDF | невідомо + — |
-| G-09 as_dict_rounds | rejected | Oracle N/A; round(v,6)==v пропускає round2, цикл пропускає відсутній ключ | green as-is; R-03 усі поля й6знаків | невідомо + невідомо |
-| G-10 transfer_fee_valid | rejected | Oracle: той самий policy table | green as-is | невідомо + — |
-| G-11 transfer_fee_invalid | accepted | Oracle N/A; новий клас unknown transfer type | as-is | невідомо + — |
+| ID / функція | Verdict | Критерій / причина | Action | Review хв | Rewrite хв |
+| --- | --- | --- | --- | --- | --- |
+| HR-G01 test_mid_rate_known_currencies | rejected | Oracle: та сама таблиця/формула | green as-is; окремий literal rewrite |23/60 |60/60 |
+| HR-G02 test_mid_rate_unknown_currency_raises | rejected | Novelty: baseline уже має невідомі from/to; окремий mid_rate не новий input-клас | green as-is |9/60 |не робив |
+| HR-G03 test_quote_unknown_tier_raises | rejected | Novelty: unknown tier уже є | green as-is |16/60 |не робив |
+| HR-G04 test_quote_within_allowance_no_spread | rejected | Novelty: exact boundary вже є | green as-is |17/60 |не робив |
+| HR-G05 test_quote_exceed_allowance_default_spread | rejected | Novelty / Oracle: paid/три спреди вже є; policy-derived expected | green as-is |12/60 |не робив |
+| HR-G06 test_quote_exceed_allowance_spread_override | rejected | Novelty: override уже перевірений | green as-is |10/60 |не робив |
+| HR-G07 test_quote_partial_allowance_applied | rejected | Novelty / Assertion strength; property Oracle N/A, повтор алгоритму слабший за literal baseline | green as-is; окремий rewrite |25/60 |81/60 |
+| HR-G08 test_quote_as_dict_rounds_floats | accepted | Property Oracle N/A: нова обмежена rounding-властивість, не точні значення/повний словник | as-is; окреме попереднє посилення збережено |32/60 |63/60 |
+| HR-G09 test_transfer_fee_known_types | rejected | Oracle: expected із policy; нове покриття4типів/5полів корисне, але не незалежний еталон | green as-is |15/60 |не робив |
+| HR-G10 test_transfer_fee_unknown_type_raises | accepted | Exceptions Oracle N/A: новий unknown transfer type | as-is |10/60 |не робив |
 
-Прийнято3/11, відхилено8/11=72.73%; oracle4/assertion2/novelty2. В історичному L11 було5/2/1: G-08 перенесено з oracle до novelty без зміни verdict чи числа тестів. Переписано3/8 rejected у tests/rewritten (3functions/4cases); вони не входять у три comparator sets. Зелені rejected зберігаються для виміру raw green набору, а не accepted-only набору. Повідомлені 20 хв review не ділимо штучно на 11 функцій, а 3 хв однієї правки не підставляємо для всіх трьох.
+**Accepted2/10; rejected8/10=80%.** Усі rejected green залишені в raw comparator; original-red немає. Переписано3функції/6cases, але це **2rejected (G01/G07) + посилення1accepted (G08)**. Rewritten поза manual/generated/all. HR-G08 round(v,6)==v пропускає round2/відсутній ключ: accepted лише як обмежена властивість, не повний контракт.
 
-## 6. Результат за класами
+Початкові7accepted/3rejected збережено9b3e6a9; проміжні3/7 —24d88b3. Після авторської перевірки новизни/Oracle остаточно2/8; це корекція застосування незмінних критеріїв, не редагування output. Пізніше рішення HR-G09 окремо не хронометрували.
 
-Primary code revision1616a96; список6c58594 незмінний. Лише pytest paths відрізняються. `reports/mutants-manual-20261113-164343Z.json`, `mutants-generated-20261113-164401Z.json`, `mutants-all-20261113-164401Z.json`.
+Review169с=2.816667хв; rewrites204с=3.4хв. Wall timer23:14:35–23:36:03Europe/Warsaw=1288с(21:28). Автор пояснив залишок915с(15:15) заповненням таблиці: це витрати процесу, не пауза; пояснення вирахуваного залишку, не незалежний секундомір. Додаткові60с уточнення повідомлені автором без timestamps. Відомий subtotal **169+204+915+60=1348с=22:28**; первинні секунди не додані повторно. [Timing JSON](experiments/human-repeat/review-timing.json).
+
+## 6. Результат за класами мутантів
+
+Незмінний runner, frozen12, code revision **55f6795b0dcc617058d4059947d83cc25d807e20**. Між трьома наборами змінювались лише pytest paths; rewritten/infrastructure/proxy не входять.
+
+| Набір / команда | Звіт (UTC у назві) |
+| --- | --- |
+| python tools/run_mutants.py --set manual | [manual](reports/mutants-manual-20261116-225513Z.json) |
+| python tools/run_mutants.py --set generated | [generated](reports/mutants-generated-20261116-225513Z.json) |
+| python tools/run_mutants.py --set all | [union](reports/mutants-all-20261116-225513Z.json) |
 
 | Клас | Baseline | Generated | Union |
 | --- | --- | --- | --- |
-| значення тіру | 3/3 | 0/3 | 3/3 |
-| межа EUR1 000 | 3/3 | 1/3 | 3/3 |
-| арифметика | 3/3 | 2/3 | 3/3 |
-| форма результату | 0/3 | 0/3 | 0/3 |
-| Разом | **9/12=75%** | **3/12=25%** | **9/12=75%** |
-| Line coverage | 34/45=75.56% | 45/45=100% | не вимірювали |
+| значення тіру |3/3 |0/3 |3/3 |
+| межа EUR 1 000 |3/3 |1/3 |3/3 |
+| арифметика |3/3 |1/3 |3/3 |
+| форма результату |1/3 |0/3 |1/3 |
+| **Разом / score** |**10/12=83.33%** |**2/12=16.67%** |**10/12=83.33%** |
+| Line coverage |39/45=86.67% |45/45=100% |не вимірювали |
 
-Survivors baseline/union: D-01,D-02,D-03. Generated: A-01,A-02,A-03,B-01,B-02,C-01,D-01,D-02,D-03. Generated kills тількиB-03,C-02,C-03. Додаткових kills union **0/12**. Класу, де generated сильніший, **немає**.
+Baseline/union survivors: **D-01,D-02**. Generated survivors: **A-01,A-02,A-03,B-02,B-03,C-01,C-03,D-01,D-02,D-03**; kills **B-01,C-02**. Додатково union до baseline **0/12**; класу, де generated сильніший, **немає**.
 
-Generated слабкий у тарифах та формі; baseline — у формі. Policy-mirror очікування не ловлять тарифну підміну; точного EUR1000 тесту в generated немає. C-01 проходить слабке співвідношення final/gross; G-09 пропускає втрату точності/ключа, previous-usage поле не перевірено. Усі outcomes підтверджені assertion audit.
+Generated не захищає значення тарифів, форму або кінцеву суму в paid-кейсах. Baseline ловить usage-поле D-03, але не викликає as_dict і пропускає D-01/02. Повне виконання45/45рядків не завадило пропустити10/12штучних дефектів.
 
-Це повний перелік12відібраних штучних змін, не випадкова production-вибірка, тому detection interval для production не оцінено. Одна генерація не вимірює розкид інших запусків. Навмисно не включаємо rewritten до union, щоб не підмінити прилад після перегляду результату.
+Список відібраний, не випадкова production-вибірка. Інтервал для production detection rate не оцінюємо; розкид інших генерацій/людей не виміряно. [Машинна сводка](reports/human-repeat/measurement-summary.json) фіксує scope, hashes, знаменники й витрати.
 
 ## 7. Ціна у двох валютах
 
-| Ресурс | Baseline | Generated workflow | Походження / межа |
+| Ресурс | Baseline | Generated workflow | Походження |
 | --- | --- | --- | --- |
-| Людина: writing, хв | 60 | ручне writing не заявлено | повідомлено автором, без start/end; human-only походження baseline не підтверджено |
-| Людина: review і відбір, хв | не надано | 20 | повідомлено автором агреговано, per-function невідомо |
-| Людина: rewriting, хв | не надано | 3 на одну правку | час інших двох невідомий; не множимо на три як фактичний вимір |
-| **Людський підсумок** | **60 writing, повний total невідомий** | **23 за review + одну правку; повний total невідомий** | незіставний повний end-to-end бюджет |
-| Машина: generation, хв | не застосовується | .304981945 | вимір API-call, окремо від людини |
-| Генерація, USD | не застосовується | .0025708 за usage, не billing | не включає інші витрати |
-| Убитих мутантів | 9/12 | 3/12 | результати на frozen списку |
+| Людина: написання, хв |**1571/60=26.183333** |0 окремого ручного написання raw |baseline wall timer; не включає попереднє навчання |
+| Людина: review й відбір, хв |окремої фази не було |**169/60=2.816667** |per-function авторські записи |
+| Людина: переписування rejected, хв |окремої фази не було |**141/60=2.35** |G01=60с,G07=81с |
+| Людина: посилення accepted, хв |окремої фази не було |**63/60=1.05** |G08; не приховане як «не робив» |
+| Заповнення таблиці, хв |у baseline wall окремо не розділялось |**915/60=15.25** |пояснення залишку автором |
+| Уточнення журналу, хв |— |**60/60=1** |self-report; пізніше HR-G09 окремо не заміряне |
+| **Відомі хвилини людини** |**26.183333 (26:11)** |**22.466667 (22:28)** |не повний час усієї підготовки/координації |
+| Машина: generation, хв |— |**0.255472385** |metadata одного request |
+| Generation USD |— |**$0.002142 estimate** |usage, billing не звірено |
+| Убитих /12 |**10/12** |**2/12** |rewritten не додані до generated |
 
-Пізніші слова автора у чаті — джерело 60/20/3; вони замінюють попередній planning scenario40/45/9, який лишається у git-історії як оцінка, не замір. Сума наданих фаз83хв не є ціною generated-only workflow, бо включає окреме написання baseline. 23хв — неповна повідомлена частина review/rewrite, не доведена економія проти60. Не обчислюємо людський ROI без однакового обсягу/якості та всіх витрат.
-
-### Додатковий timed AI-proxy, не human control
-
-Фази13.11: writing56с, review141с, одна правка31с; сума228с=3.8хв без interphase gaps. UTC, SHA256, код і різниця review verdicts — [experiments/ai-proxy/](experiments/ai-proxy/README.md). A має8functions/10cases, а historical baseline7/9; C одна функція/2cases проти historical rewritten3/4. Тому арифметичне83/3.8=21.84 не є встановленим прискоренням людини, не вимірює «середню людину» і не входить у головний висновок. Вартість агентних обчислень невідома.
+Різниця відомих людських фаз — **223с=3:43**, але generated-only ловить2/12 проти10/12: це **не економія за однакової якості й не ROI**. Додавання generated до вже написаного baseline коштує ще щонайменше22:28відомих людських витрат плюс generation і дає0нових kills на цьому списку. Сума writing+known review=2919с=48:39 — витрати виконання двох гілок експерименту, не час generated-only. Старі planning40/45, self-report60/20/3 та AI-proxy228с не використовуються як нові людські виміри.
 
 ## 8. AI Adoption Impact Report — сім рядків
 
 | Рядок | Висновок |
 | --- | --- |
-| 1. На чому міряли | Один snapshot app/engines/fx.py з кіта d6c471a; frozen12мутантів6c58594; baseline7functions і generated10retained; OpenAI gpt-4.1-mini-2025-04-14 бачив тільки fx.py та weak prompt. Це AI-assisted порівняння, не human control. |
-| 2. Число | 9/12 baseline,3/12 generated,9/12 union; розбивка§6.100% generated coverage не завадило пропустити9/12змін. Rejected8/11=72.73%. |
-| 3. Де не працює | Значення тіру: generated0/3 проти baseline3/3 — неправильна комісія пройде mirror-тест. Форма результату: обидва0/3 — втрата суми/точності/історії не буде заблокована цими наборами. |
-| 4. Ціна | Автор повідомив60хв writing,20review і3на одну правку; timestamps і повний rewrite total невідомі. Ціна всього людського workflow та ROI не встановлені. Перша й єдина генерація.304981945хв машини та$0.0025708usage; billing і решта витрат не звірені. |
-| 5. Що з цим робимо | Асистент готує чернетки негативної валідації та нових входів. Людина звіряє тарифні суми/межі з вимогами й додає contract/serialization захист на кшталт R-03; вона приймає зміни. На цьому списку assistant не додав жодного kill понад baseline, тому тарифний oracle або автономне приймання йому не делегуємо. Це запропонований процес, не вже встановлений gate. |
-| 6. Мандат | За Ship it допускаємо переглянуті G-02/G-03/G-11 як додаткові перевірки, але фінансовий реліз чекає незалежних буквальних тарифних/структурних assertions. За Zero regulatory risk не використовуємо адаптивний до policy G-03 як доказ дозволу на фінансовий реліз; лишаємо лише негативну валідацію, а кожну фінансову вимогу верифікуємо незалежно до прийняття. Нульовий ризик не обіцяємо. |
-| 7. Коли переглянемо | Нова модель/версія або інший prompt/context (зокрема явні вимоги); зміна FX/тарифів чи його контракту; новий клас дефектів або незалежний human baseline з таймером. Для кожної такої зміни — новий forecast до запуску, той самий frozen comparator для чесного порівняння, без підгонки старого результату. |
+| 1. На чому міряли | Один snapshot app/engines/fx.py кітаd6c471a, frozen12мутацій6c58594; baseline8функцій/15cases проти першої нової OpenAI відповіді10/10, модельgpt-4.1-mini-2025-04-14 бачила лише weak prompt+fx.py. Первинний code55f6795; чистий clone і межі хронології —§10. |
+| 2. Число | Baseline10/12,generated2/12,union10/12; класи§6. Відхилено8/10(80%).100%line coverage не підтверджує фінансовий контракт. |
+| 3. Де не працює | Тарифи: generated0/3 протиbaseline3/3 — хибна комісія може лишитися green. Форма: baseline/union1/3,generated0/3 — точність і наявність підсумкової суми не захищені comparators. |
+| 4. Ціна | Відомі людські26:11writing проти22:28review/rewrite/table/amendment, плюс15.3283431смашини й$0.002142usage. Пізніша координація/інфраструктура/обчислення координатора не виміряні; через10/12проти2/12рівноякісного прискорення немає. |
+| 5. Що з цим робимо | Модель може пропонувати чернетки негативних перевірок і властивостей; людина відбирає лише нові класи, задає незалежні суми/межі та повний вихідний контракт. На цьому списку немає класу, де виграла модель, тому не передаємо їй фінансовий oracle або автоматичне приймання. |
+| 6. Мандат | Ship it: беремо HR-G10 як додаткову негативну перевірку, HR-G08 лише як допоміжну властивість; фінансовий release чекає незалежного contract-захисту. Zero regulatory risk: не зараховуємо HR-G08 до release evidence й блокуємо фінансовий випуск до незалежних literal/повних контрактних перевірок та розширеного списку дефектів. Нульового ризику не обіцяємо. |
+| 7. Коли переглянемо | Нова модель/snapshot; новий prompt/context із явними вимогами; зміна FX/тарифів/схеми; новий клас дефектів або контрольований людський повтор. Перед кожним порівнянням — окремий прогноз на frozen списку й усі витрати review, не підгонка цього результату. |
 
-**CTO одним реченням:** повне виконання рядків згенерованими тестами дало лише3/12виявлених змін і0додаткових до baseline, тому модель тут — автор чернеток, не джерело фінансового еталону чи автоматичного дозволу на реліз.
+**CTO одним реченням:** згенеровані тести виконали весь модуль, але виявили2/12помилок і не додали нічого понадbaseline, тому тут модель — автор чернеток, не джерело фінансового еталону чи дозволу на випуск.
 
 ## 9. Залишковий ризик — L03
 
 | Що не покрито | Що станеться | Чому живемо з цим зараз | Відкласти чи прийняти |
 | --- | --- | --- | --- |
-| Форма результату в3основних наборах | final_amount/precision/usage можуть зіпсуватись непомітно | Зберігаємо слабкий прилад для чесного виміру; rewritten witnesses окремо | Відкласти фінансовий release до незалежного contract gate |
-| Зміни тарифів з mirror oracle | Неправильна комісія залишиться green | Прилад заморожений, baseline містить буквальні поточні вимоги | Не приймати як release evidence; вимоги переглядати незалежно |
-| Zero/negative/NaN/Infinity та decimal rounding поза списком | Невірні/непридатні грошові результати | Обмежений навчальний модуль, не повний аудит арифметики | Відкласти ширший висновок до окремих вимог і кейсів |
-| Реальна людська продуктивність/інші генерації | Помилкове рішення про економію | Є лише повідомлені60/20/3, без human-only baseline, start/end, решти правок і повторів | Прийняти відсутність висновку про ROI; потрібен новий протокол |
+| as_dict precision і обов'язковий final_amount у comparators | Клієнт отримає втрату точності/відсутню суму при green | Frozen прилад зберігаємо для виміру; rewritten демонструють дефекти окремо | Відкласти фінансовий release до повного незалежного contract gate |
+| Тарифна підміна в policy-mirror generated | Неправильна комісія стане «правильною» для тесту | Порівнюємо першу відповідь без прихованого покращення | Не використовувати generated-only як release evidence; literal вимоги задає людина |
+| Zero/negative/NaN/Infinity/decimal rounding поза списком | Непридатні грошові результати не зловлені цим виміром | Вузький навчальний модуль, не повний фінансовий аудит | Відкласти загальний висновок до явних вимог/окремих кейсів |
+| Інші генерації, люди та попереднє знайомство автора | Помилковий прогноз окупності в команді | Один повтор після історичного досліду; timing має описані межі | Прийняти відсутність загального ROI, запланувати контрольований повтор |
+| Невиміряна пізніша координація й фактичний billing | Повна ціна вища за наведений subtotal | Не підставляємо нулі або оцінки як факти | Прийняти лише нижню межу відомих витрат; звіряти окремо за потреби |
 
 ## 10. Декларація і chain-ready
 
-**Декларація AI:** асистент допоміг із baseline, списком мутантів, ізольованим OpenAI викликом, рев'ю/rewritten, аналізом і звітом. Відхилені G-01/04/05/06/07/08/09/10; тільки original-red G-06 видалено. Raw output/history збережені; самостійного людського baseline і таймера не заявляємо. Пізніші AI-замірювання не підставляються як людські. Узагальнений шаблон — `ai-adoption-impact-report.generic.md`, regex ДЗ дає0збігів. Нових API-викликів для цього ДЗ не було; опційну повторну генерацію не виконували.
+**Декларація AI:** новий baseline і первинний review/rewrites надав автор; асистент підготував порожню форму, ізольований OpenAI request, технічні прогони, перевірку застосування критеріїв і оформлення. Відхилені HR-G01..07/09; HR-G08/10 прийняті у вузькому scope. Історичний baseline/review13.11були AI-assisted і не перейменовані на людські. Нова генерація не є спробою приховано покращити стару; це окремий повтор після нового baseline, у ньому1call/0retries. Strong-prompt опційний експеримент не виконувався.
 
-Підтверджений попередній clean clone L11: be298e3,34/34PASS,union9/12; reports/clean-clone.json — історичний proof. **Нова перевірка16.11** source11422fc: fresh venv,manual9PASS/generated12PASS/full37PASS,union9/12. Точні результати — [chain-ready.md](chain-ready.md); новий mutant report залишається у тимчасовому clone, не комітиться до здачі. У full suite12infrastructure cases поза comparator.
+Стандартні тести перенесено тільки після авторського review й явного дозволу користувача. Raw commitc161d3c передує запуску; rootgenerated побітово за текстом/EOL збігається з raw. Старий root report/envelope доступні у **24d88b38ba767bf93e29749024faf1078ef4aebd**; reports/openai-generation/, первинні звіти13.11, LAB-STATUS.md і verification.md залишаються історичними, не доказом цього повтору.
 
-| Виконана команда в чистому clone | Отриманий результат |
-| --- | --- |
-| pip install -r requirements.txt | pinned pytest/pytest-cov installed |
-| pytest tests/manual | 9PASS |
-| pytest tests/generated | 12PASS |
-| python tools/run_mutants.py --set all | original green,9/12kills, D-01..03survivors |
+Поточний offline full suite після promotion: **45/45PASS =manual15+generated10+rewritten6+infrastructure14**. Infrastructure/rewritten не входять у три comparators. [Узагальнений шаблон](ai-adoption-impact-report.generic.md) не містить термінів/команд кіта за regex ДЗ.
 
-Публічного репозиторію/відправки на платформу ще немає. Невиконані критерії human/time не позначені завершеними; не вигадуємо timer/авторство для проходження рубрики. Для завершення потрібен належний новий протокол або погоджений ментором fallback, а не зміна старої історії.
+**Новий clean-clone proof ще виконується; до його завершення критерій каскаду pending.** [chain-ready.md](chain-ready.md) розділяє стару перевірку й новий етап. Публічного origin/відправки поки немає. Не заявляємо завершення всієї рубрики: точна хронологія стандартних paths і незалежність від попереднього досліду потребують рішення ментора.

@@ -1,5 +1,7 @@
 # L11 — перевірка й межі доказу
 
+**Історичний proof13.11.2026.** Не є перевіркою нового повтору: поточні джерела й статус у [Impact Report](ai-adoption-impact-report.md) та [chain-ready](chain-ready.md).
+
 13.11.2026. Локальна гілка `codex/l11-openai-demo`; push/merge/LMS не виконували. Вихідний кіт `d6c471a79e3bb4da33756c6e1026d3366f98faf5`.
 
 ## Чистий clone

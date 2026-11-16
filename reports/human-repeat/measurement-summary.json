@@ -1,0 +1,211 @@
+{
+  "scope": "new author-baseline repeat; chosen 12 mutations, one OpenAI response, not population or equal-quality ROI",
+  "measurement_source_commit": "55f6795b0dcc617058d4059947d83cc25d807e20",
+  "hashes": {
+    "mutants.toml": "04dc871bd9947a22a5dc252f0d97f070abcb960effa5f053f3a5b8a5f0a947e6",
+    "app/engines/fx.py": "b0a2262dc6b3da959bb9b87cdd9ee3a2f77447b6d4eb04ba78dd206cd88e51b2",
+    "app/engines/policy.py": "a1d17a111bb57181d065cd3f0f388ba62c68ed808c0fb7664090f1a2c11a8f91",
+    "tests/manual/test_fx_manual.py": "8f1999ea58e3c515d7fd82a14ec5362dea76c307cdebfc5615155b03d437c7da",
+    "tests/generated/test_fx_generated.py": "72f79054746be5461d69ab11c82f32bc6f4e7a5fa96dac3d859ca5384bd3c0c7",
+    "tests/rewritten/test_fx_rewritten.py": "c28ac7de150b1be529a32cb1358be97956202018541ac9aee20cafe43ba40889"
+  },
+  "sets": {
+    "manual": {
+      "file": "reports/mutants-manual-20261116-225513Z.json",
+      "killed": 10,
+      "total": 12,
+      "kills": [
+        "A-01",
+        "A-02",
+        "A-03",
+        "B-01",
+        "B-02",
+        "B-03",
+        "C-01",
+        "C-02",
+        "C-03",
+        "D-03"
+      ],
+      "survivors": [
+        "D-01",
+        "D-02"
+      ],
+      "by_class": {
+        "значення тіру": {
+          "total": 3,
+          "killed": 3
+        },
+        "межа EUR 1 000": {
+          "total": 3,
+          "killed": 3
+        },
+        "арифметика": {
+          "total": 3,
+          "killed": 3
+        },
+        "форма результату": {
+          "total": 3,
+          "killed": 1
+        }
+      }
+    },
+    "generated": {
+      "file": "reports/mutants-generated-20261116-225513Z.json",
+      "killed": 2,
+      "total": 12,
+      "kills": [
+        "B-01",
+        "C-02"
+      ],
+      "survivors": [
+        "A-01",
+        "A-02",
+        "A-03",
+        "B-02",
+        "B-03",
+        "C-01",
+        "C-03",
+        "D-01",
+        "D-02",
+        "D-03"
+      ],
+      "by_class": {
+        "значення тіру": {
+          "total": 3,
+          "killed": 0
+        },
+        "межа EUR 1 000": {
+          "total": 3,
+          "killed": 1
+        },
+        "арифметика": {
+          "total": 3,
+          "killed": 1
+        },
+        "форма результату": {
+          "total": 3,
+          "killed": 0
+        }
+      }
+    },
+    "all": {
+      "file": "reports/mutants-all-20261116-225513Z.json",
+      "killed": 10,
+      "total": 12,
+      "kills": [
+        "A-01",
+        "A-02",
+        "A-03",
+        "B-01",
+        "B-02",
+        "B-03",
+        "C-01",
+        "C-02",
+        "C-03",
+        "D-03"
+      ],
+      "survivors": [
+        "D-01",
+        "D-02"
+      ],
+      "by_class": {
+        "значення тіру": {
+          "total": 3,
+          "killed": 3
+        },
+        "межа EUR 1 000": {
+          "total": 3,
+          "killed": 3
+        },
+        "арифметика": {
+          "total": 3,
+          "killed": 3
+        },
+        "форма результату": {
+          "total": 3,
+          "killed": 1
+        }
+      }
+    }
+  },
+  "coverage": {
+    "manual": {
+      "covered_lines": 39,
+      "num_statements": 45,
+      "percent_covered": 86.66666666666667
+    },
+    "generated": {
+      "covered_lines": 45,
+      "num_statements": 45,
+      "percent_covered": 100.0
+    }
+  },
+  "review": {
+    "accepted_ids": [
+      "HR-G08",
+      "HR-G10"
+    ],
+    "rejected_ids": [
+      "HR-G01",
+      "HR-G02",
+      "HR-G03",
+      "HR-G04",
+      "HR-G05",
+      "HR-G06",
+      "HR-G07",
+      "HR-G09"
+    ],
+    "rejected_functions": 8,
+    "initial_functions": 10,
+    "rejected_fraction": 0.8,
+    "rewrite_functions": 3,
+    "rejected_rewrites": 2,
+    "accepted_strengthenings": 1,
+    "review_seconds": 169,
+    "rejected_rewrite_seconds": 141,
+    "accepted_strengthening_seconds": 63,
+    "worksheet_overhead_seconds": 915,
+    "amendment_reported_seconds": 60,
+    "known_workflow_seconds": 1348,
+    "later_hr_g09_clarification_seconds": null
+  },
+  "baseline": {
+    "functions": 8,
+    "cases": 15,
+    "writing_seconds": 1571,
+    "source_commit": "a05b3044278886b8398c7463e94396a85f62a309"
+  },
+  "generated": {
+    "functions": 10,
+    "cases": 10,
+    "original_green": true,
+    "removed": 0,
+    "model": "gpt-4.1-mini-2025-04-14",
+    "elapsed_seconds": 15.328343099914491,
+    "usage": {
+      "input_tokens": 795,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 0
+      },
+      "output_tokens": 1140,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1935
+    },
+    "cost_estimate_usd": 0.002142,
+    "billing_reconciled": false
+  },
+  "marginal_mutant_kills": 0,
+  "limits": [
+    "Author previously exposed to historical experiment; not a blinded human control",
+    "Canonical paths promoted together after source freezes; strict course path chronology not met",
+    "22:28 is known timed/reported subtotal, not untimed coordination/CI/assistant costs",
+    "No production frequency or confidence interval inferred from chosen mutations"
+  ]
+}
