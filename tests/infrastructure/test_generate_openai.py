@@ -1,9 +1,62 @@
 """Offline adapter contracts; never contact a provider or enter FX scores."""
 import json
+import sys
 
 import pytest
 
 from tools.generate_openai import build_payload, estimate_cost, extract_code, reserve_output
+
+
+@pytest.mark.parametrize("separate_output", [False, True], ids=["legacy-default", "separate-repeat"])
+def test_main_preserves_existing_artifact_when_output_is_selected(tmp_path, monkeypatch, separate_output):
+    """Wrong output routing would overwrite or collide with the historical run."""
+    from tools import generate_openai as adapter
+
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "app/engines").mkdir(parents=True)
+    (tmp_path / "prompts/generation-prompt.md").write_text("WEAK\n", encoding="utf-8")
+    (tmp_path / "app/engines/fx.py").write_text("PUBLIC_SOURCE\n", encoding="utf-8")
+    (tmp_path / "reports").mkdir()
+    legacy = tmp_path / "reports/openai-generation"
+    output = tmp_path / "repeat-generation" if separate_output else legacy
+    if separate_output:
+        legacy.mkdir()
+        (legacy / "sentinel").write_text("old response preserved", encoding="utf-8")
+
+    raw = response("def test_new():\n    assert True\n")
+    raw.update(model="example-snapshot", usage={"input_tokens": 10, "output_tokens": 5})
+
+    class ExternalResponse:
+        status = 200
+        headers = {"x-request-id": "offline-request"}
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            return False
+
+        def read(self):
+            return json.dumps(raw).encode("utf-8")
+
+    class ExternalOpener:
+        def open(self, request, timeout):
+            return ExternalResponse()
+
+    monkeypatch.setattr(adapter, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["generate_openai.py"] +
+                        (["--output-dir", str(output)] if separate_output else []))
+    monkeypatch.setenv("OPENAI_API_KEY", "offline-placeholder-not-a-real-key")
+    monkeypatch.setattr(adapter.subprocess, "check_output", lambda *args, **kwargs: "offline-revision\n")
+    monkeypatch.setattr(adapter.urllib.request, "build_opener", lambda *_: ExternalOpener())
+
+    assert adapter.main() == 0
+    assert (output / "extracted.py").read_text(encoding="utf-8") == "def test_new():\n    assert True\n"
+    assert json.loads((output / "metadata.json").read_text(encoding="utf-8"))["outcome"] == "completed"
+    assert (output / "request.json").is_file()
+    if separate_output:
+        assert (legacy / "sentinel").read_text(encoding="utf-8") == "old response preserved"
+        assert not (legacy / "response.json").exists()
 
 
 def response(text, status="completed"):

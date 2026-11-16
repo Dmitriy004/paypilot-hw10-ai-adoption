@@ -12,6 +12,8 @@
   "elapsed_seconds": 1571,
   "elapsed_minutes": 26.183333333333334,
   "pauses": [],
+  "no_pauses_confirmed_by_author": true,
+  "confirmation_source": "User answered: без перерывов",
   "timing_scope": "Elapsed wall time from opening the baseline editor until user reports completion; includes handoff/message latency. No pauses have been reported; active-only time is not established",
   "historical_generation_already_exists": true,
   "historical_baseline_unchanged": true,

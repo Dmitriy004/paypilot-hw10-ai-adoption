@@ -94,6 +94,8 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--key-env-file", type=Path, help="Existing task config; key read only in memory")
+    ap.add_argument("--output-dir", type=Path, default=ROOT / "reports/openai-generation",
+                    help="New exclusive artifact directory; existing directories are refused")
     args = ap.parse_args()
     payload = build_payload(ROOT)
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
@@ -101,7 +103,7 @@ def main() -> int:
     if upper_usd > 0.03:
         raise ValueError("Conservative input-byte/output-token budget exceeds $0.03")
     key = load_key(args.key_env_file)
-    out = ROOT / "reports/openai-generation"
+    out = args.output_dir
     reserve_output(out)
     (out / "request.json").write_bytes(body)
     metadata = {"started_at": dt.datetime.now(dt.timezone.utc).isoformat(),
