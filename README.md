@@ -1,4 +1,33 @@
-# Кіт лабораторної L11: два набори тестів на одному модулі
+# ДЗ10: вимірювання ефекту асистента
+
+Поточний пакет продовжує історію L11 без squash. Головний результат: baseline 9/12, generated 3/12, union 9/12; додаткове виявлення від generated — 0/12. Це вимір на фіксованих штучних змінах, не частота production-збоїв.
+
+- [Impact Report](ai-adoption-impact-report.md), [review усіх початкових функцій](review-log.md), [узагальнений шаблон](ai-adoption-impact-report.generic.md).
+- [Готовність до здачі та відкриті критерії](submission-readiness.md).
+- [Відтворення поточної версії](chain-ready.md).
+- [Окремий пізніший timed AI-proxy експеримент](experiments/ai-proxy/README.md); не входить у основне порівняння.
+
+Для offline-перевірки API-ключі та запущений стенд не потрібні. PowerShell:
+
+```powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements.txt
+.venv/Scripts/python.exe -m pytest tests/manual
+.venv/Scripts/python.exe -m pytest tests/generated
+.venv/Scripts/python.exe tools/run_mutants.py --set all
+.venv/Scripts/python.exe tools/generation_summary.py reports/generation.json
+.venv/Scripts/python.exe -m pytest
+```
+
+`reports/generation.json` містить історичну першу OpenAI-відповідь, а не нову генерацію чи Claude-дані. Машинні 18.2989167 с і $0.0025708 — один call та оцінка за usage, не звірка billing. Primary reports, `LAB-STATUS.md`, `verification.md` і `reports/clean-clone.json` описують попередню L11; нова перевірка описується окремо в `chain-ready.md`.
+
+Повний suite містить 37 cases. Infrastructure, rewritten і пізніший AI-proxy не входять до наборів manual/generated/all. Автор повідомив 60 хв writing, 20 хв review і 3 хв на одну правку; немає підтверджених start/end чи повного часу всіх правок. Human-only baseline до генерації не підтверджений. Технічний пакет не позначений формально завершеним або надісланим.
+
+## Збережена початкова інструкція кіта L11
+
+Нижче — upstream-довідка, а не інструкція повторно генерувати тести для цього ДЗ. Frozen app, baseline, generated, prompts і список мутантів у цьому пакеті не змінюються.
+
+### Кіт лабораторної L11: два набори тестів на одному модулі
 
 Порядок дій описано в темі L11. Цей файл пояснює, що де лежить і якими командами запускати.
 

@@ -1,0 +1,18 @@
+{
+  "provenance": "later timed AI-subagent experiment, not human or average-human baseline",
+  "date_utc": "2026-11-13",
+  "phases": [
+    {"id": "A", "start_utc": "2026-11-13T18:15:27Z", "end_utc": "2026-11-13T18:16:23Z", "seconds": 56, "functions": 8, "cases": 10, "verification": "10 passed in 0.05s", "file": "baseline.py", "sha256": "34d7f52b5c282a1b0acf1a8b288f754e42be2f7bc86dfcaf3385bc3fb7de72c3"},
+    {"id": "B", "start_utc": "2026-11-13T18:17:31Z", "end_utc": "2026-11-13T18:19:52Z", "seconds": 141, "functions": 11, "accepted": 2, "rejected": 9, "record": "review-measurement.json", "per_function_minutes": null},
+    {"id": "C", "start_utc": "2026-11-13T18:21:01Z", "end_utc": "2026-11-13T18:21:32Z", "seconds": 31, "functions": 1, "cases": 2, "verification": "2 passed in 0.04s", "file": "rewrite.py", "sha256": "1adb85c141f33b1ecea88032f1225854e1c11e5535109550d6baa959c5b57a6c"}
+  ],
+  "summed_seconds": 228,
+  "summed_minutes": 3.8,
+  "sum_excludes_interphase_handoff_gaps": true,
+  "human_reported_minutes": {"writing": 60, "review": 20, "one_rewrite": 3, "sum": 83},
+  "human_reported_source": "user statement in this task's chat; durations only, no start/end timestamps or independently verified scope",
+  "arithmetic_ratio_only": 21.842105263157894,
+  "controlled_human_speedup_established": false,
+  "subagent_total_compute_cost_usd": null,
+  "included_in_historical_comparator": false
+}

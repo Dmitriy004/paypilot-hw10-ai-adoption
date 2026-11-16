@@ -1,0 +1,151 @@
+{
+  "phase": "B",
+  "reviewer": "AI proxy; not human or average-human timing",
+  "start_utc": "2026-11-13T18:17:31Z",
+  "end_utc": "2026-11-13T18:19:52Z",
+  "elapsed_wall_seconds": 141,
+  "elapsed_wall_minutes": 2.35,
+  "timing_scope": "Review, permitted reads, reasoning, unchanged raw-test verification, writing the decision record, JSON parse verification and tool latency through the final clock reading. Excludes only recording that final clock value and the final chat handoff. No deliberate waiting; no rewrite work.",
+  "initial_decisions_complete_utc": "2026-11-13T18:18:29Z",
+  "initial_decision_interval_seconds": 58,
+  "per_function_minutes": "unknown: individual functions were not separately timed",
+  "baseline": ".superpowers/sdd/2026-11-13-hw10/proxy-baseline/test_proxy_fx.py",
+  "baseline_sha256": "34D7F52B5C282A1B0ACF1A8B288F754E42BE2F7BC86DFCAF3385BC3FB7DE72C3",
+  "criteria": "prompts/review-criteria.md",
+  "raw_source": "reports/openai-generation/extracted.py",
+  "novelty_scope": "Phase A proxy baseline and earlier accepted functions in raw source order; not a replacement for the historical comparator or its original review",
+  "function_count": 11,
+  "accepted_functions": 2,
+  "rejected_functions": 9,
+  "decisions": [
+    {
+      "id": "G1",
+      "function": "test_mid_rate_known_currencies",
+      "verdict": "reject",
+      "criterion": "Oracle",
+      "oracle": "Not independent: expected numeric rate is calculated from production policy constants",
+      "reason": "The test reproduces the production table division, so a wrong policy rate can change both actual and expected together. It does not supply an independent literal numeric rate.",
+      "action": "Preserve frozen green comparator; a separate future test could use an explicit pair and independent literal expected rate.",
+      "minutes": null
+    },
+    {
+      "id": "G2",
+      "function": "test_mid_rate_unknown_currency",
+      "verdict": "reject",
+      "criterion": "Novelty",
+      "oracle": "N/A: exception test",
+      "reason": "Phase A already tests unknown source and target currencies and their ValueError messages through quote, which delegates currency validation to mid_rate. Calling the helper directly adds no new invalid-input class or asserted error field under the frozen novelty rule.",
+      "action": "Preserve frozen green comparator; do not count this as additional proxy-baseline coverage.",
+      "minutes": null
+    },
+    {
+      "id": "G3",
+      "function": "test_quote_valid_tiers_no_spread",
+      "verdict": "reject",
+      "criterion": "Novelty",
+      "oracle": "N/A for no-spread/final-equals-gross property; literal zero is independently asserted",
+      "reason": "The main named rule is free-allowance no-spread behavior, already covered by Phase A. Repeating that rule for policy-selected tiers adds no new main-rule class; metadata assertions are secondary to the named rule.",
+      "action": "Preserve frozen green comparator; do not count metadata assertions or tier repetitions as a novel main rule.",
+      "minutes": null
+    },
+    {
+      "id": "G4",
+      "function": "test_quote_invalid_tier",
+      "verdict": "reject",
+      "criterion": "Novelty",
+      "oracle": "N/A: exception test",
+      "reason": "Phase A already asserts ValueError and the message for an unknown tier. Changing the invalid tier string does not create a new input class.",
+      "action": "Preserve frozen green comparator; do not count this as additional proxy-baseline coverage.",
+      "minutes": null
+    },
+    {
+      "id": "G5",
+      "function": "test_quote_spread_applied_when_over_allowance",
+      "verdict": "reject",
+      "criterion": "Novelty",
+      "oracle": "N/A for positive-spread/final-below-gross properties; secondary numeric spread_pct equality is coupled to policy",
+      "reason": "Phase A already covers over-allowance spread application with exact spread and final amounts. This test repeats the same main input class with weaker relational checks. Its policy-derived secondary rate expectation is also not an independent numeric oracle.",
+      "action": "Preserve frozen green comparator; do not count the duplicate rule as novel.",
+      "minutes": null
+    },
+    {
+      "id": "G6",
+      "function": "test_quote_spread_pct_override",
+      "verdict": "reject",
+      "criterion": "Oracle: conditional precondition is false",
+      "oracle": "Incorrect expected spread for the actual input: the free allowance still applies",
+      "reason": "The constructed amount is about USD 469.2, equivalent to EUR 431.664, below the EUR 500 allowance. Correct spread is zero, so the expected 5.5 fails on the unchanged implementation. Phase A already covers an override beyond the allowance.",
+      "action": "Record as original-red and preserve archived generated source. Any comparator omission is separate work; no edit or rewrite in this phase.",
+      "minutes": null
+    },
+    {
+      "id": "G7",
+      "function": "test_quote_partial_allowance_true",
+      "verdict": "reject",
+      "criterion": "Novelty",
+      "oracle": "N/A: partial-spread property",
+      "reason": "Phase A already checks partial allowance with remaining allowance and a transaction exceeding it, including exact spread and final amount. The generated inequalities repeat that main input class without a new field or rule.",
+      "action": "Preserve frozen green comparator; do not count the repeated partial-allowance property as novel.",
+      "minutes": null
+    },
+    {
+      "id": "G8",
+      "function": "test_quote_partial_allowance_false",
+      "verdict": "reject",
+      "criterion": "Novelty",
+      "oracle": "N/A: full-spread algebraic property; not an independent numeric value check",
+      "reason": "Phase A already verifies full-amount spread when partial allowance is disabled by default and when allowance is exhausted. Explicitly passing False repeats that main rule, while deriving full spread from returned fields checks only a relationship.",
+      "action": "Preserve frozen green comparator; do not count the explicit default argument as a novel rule.",
+      "minutes": null
+    },
+    {
+      "id": "G9",
+      "function": "test_fxquote_as_dict_rounds_floats",
+      "verdict": "accept",
+      "criterion": "Novelty and property assertion",
+      "oracle": "N/A: six-decimal rounding invariant",
+      "reason": "Phase A and earlier accepted functions do not exercise as_dict. The exact round(v, 6) == v invariant matches the named precision rule and is stronger than a presence/type/positivity-only assertion. It does not establish preservation of keys or original values, which is outside this test's named rule.",
+      "action": "Accept this limited rounding-property coverage in the proxy review; preserve frozen source unchanged.",
+      "minutes": null
+    },
+    {
+      "id": "G10",
+      "function": "test_transfer_fee_valid_types",
+      "verdict": "reject",
+      "criterion": "Oracle",
+      "oracle": "Not independent: expected fees are calculated from production policy constants",
+      "reason": "The fee input class is new relative to the quote-only baseline, but expected totals, flat fees and percentages are derived from the same production table used by transfer_fee. A wrong table can therefore pass unchanged.",
+      "action": "Preserve frozen green comparator; a separate future test could use explicit fee types and literal expected totals.",
+      "minutes": null
+    },
+    {
+      "id": "G11",
+      "function": "test_transfer_fee_invalid_type",
+      "verdict": "accept",
+      "criterion": "Novelty and exception assertion",
+      "oracle": "N/A: exception test",
+      "reason": "Unsupported transfer types form a new invalid-input class relative to Phase A and earlier accepted G9. The test asserts the concrete ValueError class and matching message. It is deterministic and does not claim a boundary.",
+      "action": "Accept the unsupported-transfer-type exception coverage in the proxy review; preserve frozen source unchanged.",
+      "minutes": null
+    }
+  ],
+  "verification": {
+    "attempts": 1,
+    "environment": {
+      "PYTHONPATH": "C:/Users/Admin/PycharmProjects/paypilot-hw10-ai-adoption",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "command": "C:/Users/Admin/PycharmProjects/paypilot-hw10-ai-adoption/.venv/Scripts/python.exe -m pytest C:/Users/Admin/PycharmProjects/paypilot-hw10-ai-adoption/reports/openai-generation/extracted.py -q -p no:cacheprovider",
+    "exit_code": 1,
+    "collected_cases": 13,
+    "passed_cases": 12,
+    "failed_cases": 1,
+    "failed_function": "test_quote_spread_pct_override",
+    "exact_summary": "1 failed, 12 passed in 0.11s",
+    "exact_output": ".......F.....                                                            [100%]\n================================== FAILURES ===================================\n_______________________ test_quote_spread_pct_override ________________________\n\n    def test_quote_spread_pct_override():\n        tier = list(policy.TIERS)[0]\n        from_currency = \"USD\"\n        to_currency = \"EUR\"\n        allowance_total = policy.FX_FREE_MONTHLY_ALLOWANCE_EUR[tier]\n    \n        amount = (allowance_total + 10) * policy.RATES_TO_EUR[from_currency]\n        override_spread = 5.5\n    \n        q = fx.quote(amount, from_currency, to_currency, tier,\n                     allowance_used_eur=0.0, spread_pct_override=override_spread)\n>       assert q.spread_pct == override_spread\nE       AssertionError: assert 0.0 == 5.5\nE        +  where 0.0 = FxQuote(from_currency='USD', to_currency='EUR', amount=469.20000000000005, mid_rate=0.92, tier='tier1', spread_pct=0.0...e_eur=0.0, allowance_applied=True, gross_amount=431.66400000000004, spread_amount=0.0, final_amount=431.66400000000004).spread_pct\n\nreports\\openai-generation\\extracted.py:79: AssertionError\n=========================== short test summary info ===========================\nFAILED reports/openai-generation/extracted.py::test_quote_spread_pct_override\n1 failed, 12 passed in 0.11s\n"
+  },
+  "rewrites_performed": 0,
+  "phase_c_proposal": "Optional separate timed work could add independent literal-oracle helper-rate and fee tests, improve serialization preservation checks, or repair an isolated override example. Do not replace the historical comparator or proxy baseline.",
+  "boundary_review": "No raw function claims an exact limit boundary; no boundary violation assigned merely for being away from a limit.",
+  "common_checks": "All raw functions are deterministic, use no clock/order/shared mutable state, and have descriptive rule names. No review-log, manual/rewritten tests, mutants, impact report or git history was inspected. No frozen generated code, git index, HEAD or historical comparator was changed."
+}
